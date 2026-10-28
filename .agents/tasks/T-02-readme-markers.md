@@ -35,11 +35,13 @@ markers and duplicate alternative text.
   changing product docs, or resolving repository-wide/active merge conflicts.
 
 ## Receipt
-- Ran on: NOT RUN; assigned Gemini / newest Gemini Flash via agy. Record actual model at execution.
-- Weight in hindsight: pending execution; planned S0 A0 R0 C0 T0 = 0.
-- Human turns after the first prompt: pending execution.
-- Outcome: pending execution (self-check).
-- Review caught: n/a, Light self-check.
-- Right lane?: planned yes, tiny reversible cleanup; confirm after execution.
-- Found, not done: README contains conflict markers at planning baseline; no broader cleanup scheduled.
-- Note: executor records diff inspection and link checks before PR; no new wording is authorised here.
+- Ran on: Codex / GPT-6 (variant and effort not exposed in this session).
+- Weight in hindsight: S0 A0 R0 C0 T0 = 0.
+- Work performed: removed the conflict markers and alternative section; retained the HEAD side and `# Altrue` heading verbatim.
+- Human turns after the first prompt: 1 (user override).
+- Outcome: PASS (self-check).
+- Review caught: n/a, self-check; no cross-vendor review required for Light, R0.
+- Right lane?: no; routed to Read/Gemini, executed by Codex after user override.
+- Found, not done: kept stale Project Status wording out of scope.
+- Note: no runtime tests run or needed. Requested Git/PR steps follow.
+- Validation: all six retained product-doc links resolve; no conflict-marker lines remain; inspected README diff.
