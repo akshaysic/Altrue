@@ -1,0 +1,22 @@
+"$schema" = "https://conductor.build/schemas/settings.repo.schema.json"
+
+[scripts]
+setup = "npm install"
+run = "npm run dev -- --port $CONDUCTOR_PORT"
+
+# >>> agent-kit (managed by agent-kit/install.sh; edit the kit master)
+[prompts]
+general = """
+Read AGENTS.md before you start. It sets your lane, how to weigh the task and how to hand work off.
+If the prompt names a card such as T-07, open .agents/tasks/T-07-*.md first and do its lane check.
+"""
+code_review = """
+Follow .agents/prompts/review.md. Read the task card named in the branch, PR title or recent commits before the diff.
+If you're the same vendor as the agent that wrote the change, say so first: the reviewer should be the other vendor.
+"""
+create_pr = """
+Create a pull request for this workspace's changes.
+Title: "<card id> · <card title>" when there's a task card, otherwise a short plain description.
+Body: the card's Goal, its acceptance criteria as a checklist showing what's done, and its filled Receipt, with a link to the card file.
+"""
+# <<< agent-kit
