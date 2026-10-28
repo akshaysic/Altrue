@@ -8,7 +8,7 @@ Three agents share this repo through Conductor, each in its own workspace (git w
 | Lane | Agent | Owns | Hands off |
 |---|---|---|---|
 | **Strategy** | Codex | Briefs → plans and task cards · specs and acceptance criteria · copy drafts · copy verification · long, well-specified backend/logic runs · review of Claude's code | Final copy wording, visual/UI decisions |
-| **Read** | Gemini (OpenCode or Antigravity CLI) | Whole-repo reading and `CODEMAP.md` · research across long docs, PDFs, screenshots · bulk mechanical edits (tests, fixtures, renames, i18n, lint) · visual QA against designs | Architecture calls, final copy, risky changes (R = 2) |
+| **Read** | Gemini (Antigravity CLI; OpenCode as paid fallback) | Whole-repo reading and `CODEMAP.md` · research across long docs, PDFs, screenshots · bulk mechanical edits (tests, fixtures, renames, i18n, lint) · visual QA against designs | Architecture calls, final copy, risky changes (R = 2) |
 | **Craft** | Claude (Claude Code + Claude Design) | Design exploration and design systems · UI/front-end build · hard or ambiguous code · integration and merge conflicts · humanising copy · review of Codex's code | Bulk mechanical work, first-draft copy |
 
 Know your lane: Claude models → Craft. GPT/Codex models → Strategy. Gemini models → Read.
@@ -32,11 +32,13 @@ Score each factor 0–2, multiply by its weight, add them up. That's **W**.
 | 6–7 | **Heavy** | Plan mode first. Heavy model. Cross-vendor review always. |
 | 8+ | **Split** | Don't execute. Strategy splits it into cards of W ≤ 5. |
 
-Steering overrides, which beat the lane table:
-- **T = 2** → Craft.
-- **C = 2 and A ≤ 1** → Read (lots to read, clear question).
-- **A = 2 and the question is *what* or *why*, not *how*** → Strategy.
-- **R = 2** → a human checkpoint before merge, whatever the tier.
+Steering overrides beat the lane table. Check them in order; the first match wins:
+1. **T = 2** → Craft.
+2. **W ≤ 2, R ≤ 1 and not a copy card** → Read. Gemini runs on a prepaid subscription, so cheap work goes there first.
+3. **C = 2 and A ≤ 1** → Read (lots to read, clear question).
+4. **A = 2 and the question is *what* or *why*, not *how*** → Strategy.
+
+Whatever the lane, **R = 2** needs a human checkpoint before merge.
 
 ## 3. Model map
 
@@ -49,6 +51,8 @@ Updated 2026-10-28 from Conductor's model picker. Retune keeps this current.
 | Heavy | Opus 5.5, high effort | GPT-6.1 Sol high · GPT-6 Astra for long autonomous runs | newest Gemini Pro, reading-heavy work only; otherwise escalate |
 
 Fable 5.1 only for the rare W 8+ task that genuinely can't be split.
+
+**Gemini runs through Antigravity CLI:** the human starts `agy` in the workspace terminal, signed in with their Google account, so it uses the subscription. Pick the model with `/model`. Gemini models under OpenCode in Conductor's picker bill the API key instead: use them only when the agy quota is used up.
 
 **Git chores** (commit, push, open or update a PR) always run on the Light model: switch the chat to it first, or use a new chat on it. Resolving merge conflicts isn't a chore; that's Craft.
 
@@ -68,6 +72,7 @@ Ad-hoc requests with no card: score silently. W ≤ 3 → just do it, whatever t
 - Two failed attempts at the same fix → stop and report what you tried. Don't loop.
 - Save long logs and output to a file and point to it; don't paste them into chat.
 - Don't spawn internal subagents for work the plan already split across workspaces. That's paying twice.
+- Never launch another agent's CLI (`agy`, `codex`, `claude`, `opencode`) from inside your session. The human runs each agent; Google's terms don't allow driving `agy` from other tools.
 - Dev servers: use `$CONDUCTOR_PORT` (Conductor gives each workspace ten ports from there).
 - Never commit secrets. Never deploy, publish or send anything external unless the card says so.
 
@@ -100,7 +105,7 @@ Anything that crosses agents goes through files, never chat memory.
 
 ## 9. Review
 
-Author and reviewer are always different vendors: Claude ↔ Codex, and Gemini's work goes to either. Use Conductor's review action, or open a second chat in the same workspace with the other agent. The reviewer follows `.agents/prompts/review.md`.
+Reviews follow the tiers in §2: Light cards self-check, Standard cards get a review when R ≥ 1, Heavy cards always do. The planner can add one where taste or risk calls for it, and copy always gets its two-vendor check (§7). When there is a review, author and reviewer are different vendors: Claude ↔ Codex, and Gemini's work goes to either. Use Conductor's review action, or open a second chat in the same workspace with the other agent. The reviewer follows `.agents/prompts/review.md`.
 
 ## 10. Receipts (how the routing learns)
 
@@ -109,13 +114,15 @@ Fill the Receipt section of the card before the PR, for every card and for any a
 ## 11. Budget and parallel caps
 
 - At most **2 Claude, 2 Codex and 3 Gemini** workspaces at once. The planner schedules waves to fit.
-- When the human says a vendor is running low, reroute: non-visual Craft code → Codex · Strategy plans → Claude Sonnet · Read work → Codex Luna. Visual and voice work waits for Claude unless the human says otherwise. Never drop the two-vendor rule for copy and review.
+- Subscriptions first. Gemini via `agy` is prepaid, so it takes Light work from any lane before anything bills per token.
+- When the human says a vendor is running low, reroute: Light work from any lane → Gemini · non-visual Craft code → Codex · Strategy plans → Claude Sonnet · Read work → Codex Luna. Visual and voice work waits for Claude unless the human says otherwise. Never drop the two-vendor rule for copy and review.
 - Use the lightest model the tier allows. Context is the expensive part: read the map, not the repo.
 
 ### Routing changelog
 - 2026-10-28 · v1 · initial lanes, weights, model map.
 - 2026-10-28 · v1.1 · git chores always run on the Light model.
 - 2026-10-28 · v1.2 · model check before starting a card.
+- 2026-10-28 · v1.3 · Light non-copy cards with R ≤ 1 go to Gemini via agy (subscription first); agents never launch other agents' CLIs; reviews follow the tier table.
 <!-- agent-kit:end -->
 
 ## Project

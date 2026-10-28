@@ -2,6 +2,7 @@
 
 Date: 2026-10-28. Planning baseline: `95ad16c`. Brief: `.agents/BRIEF.md`.
 Budget: **claude ok · codex ok · gemini ok**.
+Amended for kit v1.3: T-02 moved to Gemini (agy) in wave 0; T-01 and T-02 self-check (Light, R0), so their review slots are gone.
 
 ## Goal
 
@@ -72,8 +73,8 @@ impact summary once this slice is accepted.
 - **Runtime/network:** do not install new dependencies, fetch remote assets/fonts,
   call services, deploy, publish, or push. Report any baseline command that would
   require an external request; use available local dependencies/assets instead.
-- **Review:** different vendors review every card using `.agents/prompts/review.md`.
-  This includes explicit review slots below. Gemini performs visual QA for T-05;
+- **Review:** follows AGENTS.md §9. T-01 and T-02 are Light with R0, so they self-check.
+  T-03 gets the two-vendor copy check; T-04 and T-05 get Codex reviews with `.agents/prompts/review.md`. Gemini performs visual QA for T-05;
   Codex reviews its code. No planned card is R2; any escalation to R2 requires a
   human checkpoint before merge under AGENTS.md.
 - **Receipts:** the cards contain filled planning placeholders, explicitly marked
@@ -109,8 +110,8 @@ impact summary once this slice is accepted.
 - Ran on: Codex / GPT-6 (variant and effort not exposed in this session).
 - Work performed: source-limited planning; five task cards and this dispatch plan.
 - Human turns after the first prompt: 0.
-- Outcome: plan prepared; execution and cross-vendor review pending.
-- Review caught: not reviewed.
+- Outcome: fixed-after-review (all five review findings applied); execution pending.
+- Review caught: 1 must / 3 should (Claude, cross-vendor review of Codex's plan).
 - Right lane?: yes, Strategy.
 - Found, not done: missing CODEMAP, conflicted README, unfilled VOICE; scheduled below.
 - Note: no implementation, runtime validation, or future-stage results claimed.
@@ -126,24 +127,21 @@ is literal: the verifier cannot reuse the drafting or humanising chat.
 
 Within each wave, work has disjoint write ownership. In wave 7, Gemini writes
 only visual-QA findings; Codex owns the T-05 review receipt. Finish each wave and
-resolve its review findings before dependent work starts. Peak concurrency is
-2 Claude, 2 Codex, and 1 Gemini, within the 2/2/3 caps; no internal subagents.
-At wave 1 entry, finish T-01's review and integrate the map first; T-02 and T-04
-can then run together. This is a short sequential gate inside that wave.
+resolve its review findings before dependent work starts. Peak concurrency is 1 Claude, 1 Codex, and 2 Gemini, within the 2/2/3 caps; no internal subagents.
+Wave 0 runs T-01 and T-02 in parallel on Gemini; each self-checks and opens its own PR.
+Merge the map before T-04 starts in wave 1.
 
 | Wave | Card | Agent | Model / effort | Start prompt |
 |---|---|---|---|---|
-| 0 | T-01 map | Gemini | newest Gemini Flash / default (Light) | `Do T-01 (.agents/tasks/T-01-codemap.md).` |
-| 1 | T-01 review | Codex | GPT-6 Luna / default (Light) | `Review T-01 using .agents/prompts/review.md; update its receipt.` |
-| 1 | T-02 README | Claude | Haiku 5.5 / default (Light) | `Do T-02 (.agents/tasks/T-02-readme-markers.md).` |
+| 0 | T-01 map | Gemini (agy, in the terminal) | newest Gemini Flash / default (Light) | `Do T-01 (.agents/tasks/T-01-codemap.md).` |
+| 0 | T-02 README | Gemini (agy, in the terminal) | newest Gemini Flash / default (Light) | `Do T-02 (.agents/tasks/T-02-readme-markers.md).` |
 | 1 | T-04 exploration + voice | Claude | Sonnet 5.5 / normal (Standard), with Claude Design | `Do T-04 (.agents/tasks/T-04-first-slice-design.md).` |
-| 2 | T-02 review | Codex | GPT-6 Luna / default (Light) | `Review T-02 using .agents/prompts/review.md; update its receipt.` |
 | 2 | T-04 review | Codex | GPT-6.1 Sol / normal (Standard) | `Review T-04 using .agents/prompts/review.md; update its receipt.` |
 | 3 | T-03 draft | Codex | GPT-6 Luna / default (Light) | `Do T-03 (.agents/tasks/T-03-demo-mode-banner.md), draft stage only.` |
 | 4 | T-03 humanise | Claude, second chat | Haiku 5.5 / default (Light) | `Run T-03's Craft humanise stage using .agents/prompts/humanise.md for .agents/copy/demo-mode-banner/.` |
 | 5 | T-03 verify | Codex, fresh chat | GPT-6 Luna / default (Light) | `Run T-03's verify stage using .agents/prompts/verify-copy.md for .agents/copy/demo-mode-banner/.` |
 | 6 | T-05 build | Claude | Sonnet 5.5 / normal (Standard) | `Do T-05 (.agents/tasks/T-05-cause-split-preview.md), build stage.` |
-| 7 | T-05 visual QA | Gemini | newest Gemini Flash / default (Light) | `Run T-05's visual-QA stage against the T-04 references; write deviations to .agents/research/first-demo-slice-visual-qa.md.` |
+| 7 | T-05 visual QA | Gemini (agy, in the terminal) | newest Gemini Flash / default (Light) | `Run T-05's visual-QA stage against the T-04 references; write deviations to .agents/research/first-demo-slice-visual-qa.md.` |
 | 7 | T-05 code review | Codex | GPT-6.1 Sol / normal (Standard) | `Review T-05 using .agents/prompts/review.md; update its receipt.` |
 | 8, if needed | T-05 corrections | Claude | Sonnet 5.5 / normal (Standard) | `Apply only the T-05 review and visual-QA fixes; update evidence and your receipt.` |
 | 9, if needed | T-05 recheck | Codex, then Gemini | GPT-6.1 Sol / normal; newest Gemini Flash / default | `Recheck the changed T-05 acceptance criteria and visual deviations in sequence; complete its receipt.` |

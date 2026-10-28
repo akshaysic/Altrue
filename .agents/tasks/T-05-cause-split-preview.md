@@ -2,7 +2,7 @@
 
 | Lane | Agent | Tier | Model / effort | Reviewer | Wave | Depends on |
 |---|---|---|---|---|---|---|
-| Craft | Claude | Standard | Sonnet 5.5 / normal | Codex / GPT-6.1 Sol; Gemini Flash visual QA | 6–9 | reviewed T-01/T-04; T-03 PASS |
+| Craft | Claude | Standard | Sonnet 5.5 / normal | Codex / GPT-6.1 Sol; Gemini Flash visual QA | 6–9 | merged T-01, reviewed T-04; T-03 PASS |
 
 **Weight:** S1 A1 R1 C1 T1 = **5**. One isolated feature across a few new files,
 bounded component/state decisions using one local data module; shared app runtime

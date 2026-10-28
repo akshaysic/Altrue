@@ -2,7 +2,7 @@
 
 | Lane | Agent | Tier | Model / effort | Reviewer | Wave | Depends on |
 |---|---|---|---|---|---|---|
-| Read | Gemini | Light | newest Gemini Flash / default | Codex / GPT-6 Luna | 0 | none |
+| Read | Gemini (agy) | Light | newest Gemini Flash / default | self-check | 0 | none |
 
 **Weight:** S0 A0 R0 C2 T0 = **2**. One documentation artifact, exact map prompt;
 whole-repo reading is C2 and routes to Read. No code edits.
@@ -26,13 +26,15 @@ slice without rediscovering the repository.
   source/caveat fields, reusable UI/tokens, and any existing donation/split logic.
 - [ ] Identify up to three usable active local cause records by actual ID/export
   and provenance location; explicitly flag absent data instead of inventing it.
-- [ ] Note startup/build external requests, remote fonts/assets, baseline conflict
-  markers, installed dependencies, and whether locally running checks is feasible.
+- [ ] Note startup/build external requests, remote fonts/assets, installed
+  dependencies, and whether locally running checks is feasible.
   Do not fetch sources, install packages, or call external services.
+  README.md belongs to T-02, which runs in parallel: don't describe its conflict state.
 - [ ] Map the isolated `/demo` change locations proposed in T-05; flag if its
   assumptions are invalid or the work needs rescoring before build dispatch.
-- [ ] Self-check paths and commands against the repo; commit as the map prompt
-  specifies using the Light model. Codex reviews in wave 1 and updates the receipt.
+- [ ] Self-check paths and commands against the repo (Light, R0: no cross-vendor
+  review per AGENTS.md §9). Commit as the map prompt specifies and open the PR,
+  on the same Light model.
 
 ## Out of scope
 - Any product, seed, config, dependency, README, or VOICE change; fixes discovered
@@ -42,8 +44,8 @@ slice without rediscovering the repository.
 - Ran on: NOT RUN; assigned Gemini / newest Gemini Flash / default. Record actual model at execution.
 - Weight in hindsight: pending execution; planned S0 A0 R0 C2 T0 = 2.
 - Human turns after the first prompt: pending execution.
-- Outcome: pending execution and Codex review.
-- Review caught: pending Codex review; no counts claimed.
+- Outcome: pending execution (self-check).
+- Review caught: n/a, Light self-check.
 - Right lane?: planned yes, Read under the C2/A0 override; confirm after execution.
 - Found, not done: CODEMAP missing at planning baseline; record additional findings here.
 - Note: planner filled scheduling data only; executor records checks, commit, and handoff before PR.

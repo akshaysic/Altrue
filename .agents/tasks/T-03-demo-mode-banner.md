@@ -2,7 +2,7 @@
 
 | Lane | Agent | Tier | Model / effort | Reviewer | Wave | Depends on |
 |---|---|---|---|---|---|---|
-| Strategy | Codex; Claude humanises | Light | GPT-6 Luna / default; Haiku 5.5 / default | Claude for draft; fresh Codex for final meaning | 3–5 | reviewed T-01 and T-04 |
+| Strategy | Codex; Claude humanises | Light | GPT-6 Luna / default; Haiku 5.5 / default | Claude for draft; fresh Codex for final meaning | 3–5 | merged T-01, reviewed T-04 |
 
 **Weight:** S1 A0 R0 C0 T1 = **2**. One tiny factual disclosure, a few copy files,
 fixed claims and format; conventional utility copy in an established voice, not
