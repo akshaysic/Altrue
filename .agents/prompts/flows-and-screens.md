@@ -2,7 +2,7 @@
 
 A multi-modal planning run in three stages:
 
-1. **Gemini (Read lane)** reads everything, images included, and writes a complete flow and screen inventory.
+1. **The Read lane** reads everything, images included, and writes a complete flow and screen inventory. Use Claude Sonnet 5.5 whenever Gemini is disabled, unavailable or blocks continuation, per the project routing override in AGENTS.md.
 2. **Codex (Strategy lane)** turns that inventory into the MVP roadmap and the next cards.
 3. **Design** happens in Claude Design, with the human. It isn't an agent run.
 
@@ -24,7 +24,7 @@ Copied into `.context/inputs/` (gitignored) before Stage 1. Code and docs are al
 
 ## Stage 1 · Flow and screen inventory
 
-**Agent:** the Read lane. With `Gemini: off`, that's Claude Sonnet 5.5, since this work is visual. Otherwise it's Gemini, newest Flash.
+**Agent:** the Read lane. Use Claude Sonnet 5.5 / normal whenever Gemini is disabled, unavailable, out of quota, unable to read required inputs or otherwise blocks continuation. This applies to text and visual work; the lane remains Read. Otherwise use Gemini, newest Flash. Resume from existing handoff files and record the fallback in the receipt; do not recreate an existing inventory card.
 **Lane:** Read. **Weight:** S1 A1 R0 C2 T1 = 5 (C = 2 and A ≤ 1 routes to Read).
 **Keep it lean:** work from the Figma contact sheets first. Open a single `views/<node>.png` only when you need exact detail for a screen you're describing.
 
@@ -129,12 +129,12 @@ A checklist proving that:
    - **Design:** artboards in Claude Design, at mobile 390 and desktop 1440
    - **Copy:** in `.agents/copy/<slug>/` through the AGENTS.md §7 double-check
    - **Build:** Claude
-   - **Visual QA:** Gemini compares screenshots at 390, 768 and 1440 against the design
+   - **Visual QA:** the Read lane compares screenshots at 390, 768 and 1440 against the design; use Claude Sonnet 5.5 / normal when Gemini is disabled, unavailable or blocks continuation
    - **Code review:** Codex
 4. **Write cards only for the next two milestones,** from the template:
    - each card W ≤ 5, numbered from the next free number
-   - each on the cheapest model its weight allows
-   - waves inside the parallel caps
+   - each on the cheapest model its weight allows, subject to the project's explicit Sonnet fallback
+   - waves inside the parallel caps; Read work routed to Sonnet shares the 2-Claude cap with Craft work
 
    Everything later stays in the roadmap, not as cards.
 5. **Leave PLAN.md's open cards (T-03 to T-05) alone,** and slot them into the milestone they belong to. Resolve nothing marked **[OPEN]**: list those at the top of the roadmap for the human.

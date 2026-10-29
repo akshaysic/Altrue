@@ -13,3 +13,5 @@ You're the **Craft** lane: design, UI build, hard or ambiguous code, integration
 <!-- agent-kit:end -->
 
 ## Your Claude-only notes
+
+For Read-lane cards, apply the Sonnet fallback in `AGENTS.md`'s Project section. These cards remain in the Read lane; the default Craft role above must not block their continuation.

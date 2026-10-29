@@ -130,6 +130,13 @@ Fill the Receipt section of the card before the PR, for every card and for any a
 ## Project
 
 Gemini: off
+
+### Project routing override · Sonnet fallback
+
+- When Gemini is disabled, unavailable, out of quota, unable to read required inputs, or otherwise blocks continuation, use **Claude Sonnet 5.5 / normal** for its Read-lane work, including text reading, bulk work, image reading and visual QA. This overrides the text-only Luna fallback in §11 and permits Sonnet for these Light Read tasks.
+- Keep the card in the **Read** lane. Claude performing this fallback counts as Read for lane checks; do not stop because Claude normally owns Craft. Record the fallback in the receipt and resume from existing handoff files.
+- Count fallback work against the **2 Claude** workspace cap, alongside Craft work. Preserve the two-vendor copy and review rules: Codex reviews Claude-authored work when review is required; Sonnet cannot review or verify its own work. Git chores still use a Light model.
+
 <!-- Fill this in per project. Every agent reads it together with the block above. -->
 - What this is: Altrue, a meta-charity microdonation app. Donors split recurring or one-time donations across high-impact causes, guided by an AI donation assistant, and see modest, caveated impact estimates (nets funded, children educated). Donor-side MVP; product source of truth is `docs/` (start with `docs/ALTRUE_PRODUCT_CONTEXT.md` and `docs/MVP_REQUIREMENTS.md`).
 - Stack: Next.js 16 (App Router) · React 18 · TypeScript · Tailwind 3 · lucide-react. Seed data in `lib/seed/`, shared types in `lib/types/`. Payments and AI are mocked for now.
