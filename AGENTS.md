@@ -115,6 +115,7 @@ Fill the Receipt section of the card before the PR, for every card and for any a
 
 - At most **2 Claude, 2 Codex and 3 Gemini** workspaces at once. The planner schedules waves to fit.
 - Subscriptions first. Gemini via `agy` is prepaid, so it takes Light work from any lane before anything bills per token.
+- **Gemini off:** if the Project section says `Gemini: off`, the Read lane moves. Visual work (images, screenshots, visual QA) goes to Claude Sonnet 5.5, and text-only bulk work to Codex GPT-6 Luna. Lane checks count these as the Read lane, so they don't stop.
 - When the human says a vendor is running low, reroute: Light work from any lane → Gemini · non-visual Craft code → Codex · Strategy plans → Claude Sonnet · Read work → Codex Luna. Visual and voice work waits for Claude unless the human says otherwise. Never drop the two-vendor rule for copy and review.
 - Use the lightest model the tier allows. Context is the expensive part: read the map, not the repo.
 
@@ -123,9 +124,18 @@ Fill the Receipt section of the card before the PR, for every card and for any a
 - 2026-10-28 · v1.1 · git chores always run on the Light model.
 - 2026-10-28 · v1.2 · model check before starting a card.
 - 2026-10-28 · v1.3 · Light non-copy cards with R ≤ 1 go to Gemini via agy (subscription first); agents never launch other agents' CLIs; reviews follow the tier table.
+- 2026-10-29 · v1.4 · "Gemini: off" switch: the Read lane moves to Sonnet (visual) and Luna (text).
 <!-- agent-kit:end -->
 
 ## Project
+
+Gemini: off
+
+### Project routing override · Sonnet fallback
+
+- When Gemini is disabled, unavailable, out of quota, unable to read required inputs, or otherwise blocks continuation, use **Claude Sonnet 5.5 / normal** for its Read-lane work, including text reading, bulk work, image reading and visual QA. This overrides the text-only Luna fallback in §11 and permits Sonnet for these Light Read tasks.
+- Keep the card in the **Read** lane. Claude performing this fallback counts as Read for lane checks; do not stop because Claude normally owns Craft. Record the fallback in the receipt and resume from existing handoff files.
+- Count fallback work against the **2 Claude** workspace cap, alongside Craft work. Preserve the two-vendor copy and review rules: Codex reviews Claude-authored work when review is required; Sonnet cannot review or verify its own work. Git chores still use a Light model.
 
 <!-- Fill this in per project. Every agent reads it together with the block above. -->
 - What this is: Altrue, a meta-charity microdonation app. Donors split recurring or one-time donations across high-impact causes, guided by an AI donation assistant, and see modest, caveated impact estimates (nets funded, children educated). Donor-side MVP; product source of truth is `docs/` (start with `docs/ALTRUE_PRODUCT_CONTEXT.md` and `docs/MVP_REQUIREMENTS.md`).
