@@ -41,11 +41,11 @@ slice without rediscovering the repository.
   during reading; external research; additional cards or internal subagents.
 
 ## Receipt
-- Ran on: NOT RUN; assigned Gemini / newest Gemini Flash / default. Record actual model at execution.
-- Weight in hindsight: pending execution; planned S0 A0 R0 C2 T0 = 2.
-- Human turns after the first prompt: pending execution.
-- Outcome: pending execution (self-check).
+- Ran on: 2026-10-28 · Codex / GPT-6 (variant and effort not exposed); proceeded after the user's explicit lane override.
+- Weight in hindsight: S0 A0 R0 C2 T0 = 2.
+- Human turns after the first prompt: 1 (lane override).
+- Outcome: map written and self-checked; PR #4 opened against `main`.
 - Review caught: n/a, Light self-check.
-- Right lane?: planned yes, Read under the C2/A0 override; confirm after execution.
-- Found, not done: CODEMAP missing at planning baseline; record additional findings here.
-- Note: planner filled scheduling data only; executor records checks, commit, and handoff before PR.
+- Right lane?: no; assigned Read, executed in Codex Strategy after explicit user override.
+- Found, not done: T-05's preferred active cause records exist (`global-health`, `education-opportunity`, `climate-environment`) and local descriptions are documented in `docs/CAUSE_TAXONOMY.md`, but `Cause` has no source field and the nonprofit source notes are generic placeholders. T-05's inspectable per-cause provenance/source-note criterion needs clarification before build. No `/demo` route or equal-split helper exists; current `demoAllocations` are fixed 40/30/30 rows. `rg` is unavailable in this workspace; used `find` and `grep` instead.
+- Note: `CODEMAP.md` is 70 lines; checked route/data/component paths, package scripts, installed local tool binaries, and absence of explicit source-level network/font/asset calls. No lint/typecheck/build was run. Map committed as `docs: refresh CODEMAP`; PR #4 is open.
