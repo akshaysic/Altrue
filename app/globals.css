@@ -4,6 +4,18 @@
 
 :root {
   color-scheme: light;
+
+  /* "Ledger" design-system tokens, proposed and not locked yet.
+     Flat surfaces only: no shadows, glows or gradients. */
+  --ds-ground: #f6f7f3;
+  --ds-ink: #14181b;
+  --ds-ink-2: #5b6166;
+  --ds-rule: #dcddd6;
+  --ds-accent: #2e5e45; /* pending: #1f4e79, #8a4b2f, #14181b on trial */
+  --ds-on-accent: #ffffff;
+  --ds-demo: #96533a;
+  --ds-notice-bg: #f1e4dc;
+  --ds-notice-ink: #7a3f2a;
 }
 
 * {
