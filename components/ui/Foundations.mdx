@@ -1,0 +1,59 @@
+import { Meta, ColorPalette, ColorItem, Typeset } from '@storybook/addon-docs/blocks';
+
+<Meta title="Foundations" />
+
+# Foundations · "Ledger"
+
+**Status: proposed, not locked.** These come from the Claude Design canvas "Altrue core flow" (design direction v0). The design system will replace them once it's settled. Tokens live as CSS variables in `app/globals.css` and as `ds-*` classes in `tailwind.config.ts`.
+
+The idea is Wise's approach, never its brand: the amount is the largest thing on every money screen, plain labelled rows sit between thin rules, there is one strong accent, and every surface is flat.
+
+## Colour
+
+The accent is still undecided. Use the **Accent** menu in the toolbar to try each candidate on every story.
+
+<ColorPalette>
+  <ColorItem title="ground" subtitle="One flat background on every screen" colors={{ ground: '#F6F7F3' }} />
+  <ColorItem title="ink" subtitle="Text, outlines, secondary buttons" colors={{ ink: '#14181B' }} />
+  <ColorItem title="ink-2" subtitle="Secondary text, 5.8:1 on ground" colors={{ 'ink-2': '#5B6166' }} />
+  <ColorItem title="rule" subtitle="1 px row dividers" colors={{ rule: '#DCDDD6' }} />
+  <ColorItem
+    title="accent (pending)"
+    subtitle="Primary action, selection, progress"
+    colors={{ green: '#2E5E45', blue: '#1F4E79', rust: '#8A4B2F', ink: '#14181B' }}
+  />
+  <ColorItem title="demo" subtitle="Demo labels and caveat markers" colors={{ demo: '#96533A' }} />
+  <ColorItem title="notice" subtitle="Demo banner and warnings" colors={{ 'notice bg': '#F1E4DC', 'notice ink': '#7A3F2A' }} />
+</ColorPalette>
+
+## Type
+
+Instrument Sans for everything, with tabular figures for money. Geist Mono at 12 px for demo labels, caveats, sources and timestamps. Both are self-hosted through Fontsource, so nothing loads from Google.
+
+<Typeset fontFamily="'Instrument Sans'" fontWeight={700} fontSizes={[88, 72, 56]} sampleText="$10" />
+<Typeset fontFamily="'Instrument Sans'" fontWeight={700} fontSizes={[32]} sampleText="Check your plan" />
+<Typeset fontFamily="'Instrument Sans'" fontWeight={600} fontSizes={[17]} sampleText="Global Health · $4" />
+<Typeset fontFamily="'Instrument Sans'" fontWeight={400} fontSizes={[16, 14]} sampleText="This is a starting point. You can adjust the split before confirming." />
+<Typeset fontFamily="'Geist Mono'" fontWeight={400} fontSizes={[12]} sampleText="DEMO ESTIMATE · SOURCE: DEMO SEED" />
+
+- **Hero amount:** 72 px, 88 px from md, bold, tight tracking · `text-ds-amount-lg md:text-ds-amount-xl`
+- **Compact amount:** 56 px, bold · `text-ds-amount-md`
+- **Heading:** 32 / 36, bold · `text-ds-h1`
+- **Row label and value:** 17 / 22, semibold · `text-ds-row`
+- **Body:** 16 / 24 · `text-ds-body`
+- **Secondary:** 14 / 20 · `text-ds-small`
+- **Mono label:** 12 / 16 · `font-ds-mono text-ds-mono`
+
+## Shape
+
+- Pill buttons, 56 px high, full width at the bottom on mobile.
+- Chips 48 px high. Every control is at least 44 px.
+- Notices are flat tinted blocks with rounded corners.
+
+## Never
+
+Shadows, glows, gradients, floating cards, left-border accent cards, stock photos, emoji, and the legacy purple and magenta gradient.
+
+## Copy
+
+Calm and plain, with no guilt or urgency. Say "estimated" and "helped support", never "caused" or "guaranteed". Small amounts are valid. Copy in these stories is placeholder until it passes the two-vendor copy check.
