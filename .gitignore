@@ -12,3 +12,6 @@ pnpm-debug.log*
 tsconfig.tsbuildinfo
 .conductor/settings.local.toml
 *.bak-*
+
+*storybook.log
+storybook-static

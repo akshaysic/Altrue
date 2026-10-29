@@ -58,6 +58,7 @@ Date: 2026-10-28 · HEAD: `c0d9010`
 - Data is typed in `lib/types/index.ts`; seed records are arrays/constants in `lib/seed/`.
 - Styling is mostly Tailwind utility classes with a small set of extended colors in `tailwind.config.ts`; global CSS only sets Tailwind layers, box sizing, body background/margin, and link decoration.
 - `formatCents` defaults to USD; payment and AI behavior shown in pages is explicitly mocked/static.
+- Storybook config is in `.storybook/`, and stories sit next to their component as `*.stories.tsx`.
 
 ## Gotchas
 
