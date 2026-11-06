@@ -15,3 +15,6 @@ tsconfig.tsbuildinfo
 
 *storybook.log
 storybook-static
+
+# Local design references and screenshots
+.agents/design/references/
