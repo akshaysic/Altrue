@@ -8,7 +8,7 @@
 bounded component/state decisions using one local data module; shared app runtime
 is R1. Visual/voice exploration is complete in T-04, so implementation taste is T1.
 If actual scope needs broader context or design decisions, rescore before building.
-**Status:** ready
+**Status:** blocked on reviewed T-04, T-03 PASS, and human skim of the designated source packet
 **Start prompt:** `Do T-05 (.agents/tasks/T-05-cause-split-preview.md), build stage.`
 
 ## Goal
@@ -25,6 +25,11 @@ equal split of $5, view the allocation, and return/reset without a dead end.
   CODEMAP. Do not change root layout, global styles, seed data, config, or homepage.
 - Documentation/evidence ownership: this receipt and
   `.agents/research/first-demo-slice-visual-qa.md`. Screenshots go in `.context/`.
+- Source data: use `.agents/research/charity-shortlist-2026-11-07.json` and
+  `.agents/research/charity-shortlist-2026-11-07.md` as the T-05 source packet,
+  after the human skims it. Those files are not present in the current workspace;
+  do not invent or replace their entries. Use no more than three selected
+  records in this labelled `/demo` sidecar.
 - Feature state is in memory; no auth, storage, mutation API, payment or AI call.
   No new dependencies, external assets/fonts, network integrations, or deployment.
 
@@ -35,6 +40,9 @@ equal split of $5, view the allocation, and return/reset without a dead end.
 - [ ] Show up to three active local seed causes with existing names/descriptions
   and inspectable local source notes; use only mapped records with provenance.
   Do not display quantitative impact or unsupported verification/partner claims.
+- [ ] Source claims come only from the named shortlist packet and records include
+  `source_name`, `source_url`, and `as_of`; do not add tax-deductibility claims.
+  Keep `/demo` a sidecar to the core donor flow, which friends test.
 - [ ] Start with no selection. Show the fixed $5 monthly sample budget. Use
   accessible labelled controls; an empty selection cannot request a preview.
 - [ ] Preview occurs only after the donor explicitly requests equal division

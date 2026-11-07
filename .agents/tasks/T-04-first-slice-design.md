@@ -1,4 +1,4 @@
-# T-04 · Explore the first slice and establish provisional voice
+# T-04 · Explore the `/demo` sidecar and establish provisional voice
 
 | Lane | Agent | Tier | Model / effort | Reviewer | Wave | Depends on |
 |---|---|---|---|---|---|---|
@@ -10,8 +10,9 @@ VOICE, a few visual/voice choices; T2 explicitly routes to Craft.
 **Start prompt:** `Do T-04 (.agents/tasks/T-04-first-slice-design.md).`
 
 ## Goal
-Give the builder a concrete responsive design and the copy agents a usable voice
-for the single cause-selection/equal-split preview feature.
+Give the builder a concrete responsive design for the `/demo` sidecar and give the
+copy agents a usable provisional voice. This is not the layout specification for
+the simulated donor flow that friends test.
 
 ## Context
 - Read `.agents/CODEMAP.md`, `.agents/PLAN.md`, `.agents/VOICE.md`, and the UX/trust
