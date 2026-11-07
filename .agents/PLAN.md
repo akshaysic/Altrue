@@ -9,7 +9,7 @@ Goal: a sleek, shareable MVP that friends can test by ~Fri 13 Nov 2026.
 ## 0. Session start (paste this into every new session, any model)
 
 ```
-Read .agents/PLAN.md fully, then .agents/VOICE.md, then the card for the current step.
+Read .agents/CONTEXT.md first, then the card for the current step. Consult .agents/PLAN.md section 6 for roadmap/status and .agents/VOICE.md when the card includes copy.
 Do NOT start building yet. First reply with, in under 200 words:
 1. Current step ID from PLAN.md section 6 and whether its card is Done/Ready/Blocked.
 2. Git state: branch, ahead/behind, uncommitted files, open PRs.
@@ -43,12 +43,14 @@ Keep it factual, cite file paths. Max 2 pages.
 A web app a friend can open on their phone, click through in 5 to 10 minutes, and give feedback on.
 
 **In scope**
-- Onboarding: a few questions about what the person cares about.
-- Cause discovery: recommended causes/charities from a curated, hand-written dataset (static JSON), each with a short plain-language "why this" and source links.
+- Onboarding: choose among Global health, Poverty relief, and Animal welfare, with optional priority and monthly amount. Catastrophic risks and Community-chosen are outside the MVP.
+- Cause discovery: static curated records with source links. Show GiveDirectly, Malaria Consortium, Against Malaria Foundation, Helen Keller Intl, and New Incentives side by side as equals, with no default top pick. Offer GiveWell Top Charities Fund as the separate “let experts decide” option.
+- Animal welfare: The Humane League is the only MVP animal charity. Keep other animal records in data flagged “post-MVP”. GlobalGiving uses static curated entries; its live API feed is post-MVP.
 - Give flow: choose an amount, see a split across causes, confirm. **Simulated.** No real payment, clearly labelled "Demo: no money moves".
-- Impact view: what a gift "would" do, using clearly sourced figures.
+- Impact view: show only sourced figures labelled “estimate”; every record carries `source_name`, `source_url`, and `as_of`. Omit unsupported figures or label any illustrative content “illustrative”. Do not make tax-deductibility claims.
 - Simple profile/history stored locally (localStorage).
 - Feedback link/form on every screen footer.
+- `/demo` remains a labelled sidecar; the simulated donor flow is the friends-test path.
 
 **Out of scope for this MVP** (the hard parts that stalled the project)
 - Real payment gateway or any fintech integration.
@@ -57,7 +59,7 @@ A web app a friend can open on their phone, click through in 5 to 10 minutes, an
 - Rewards/points gamification (maybe a single lightweight "streak" at most).
 - Accounts/auth.
 
-**Trust rule:** because this is charity-adjacent, every number shown needs a source in the data file (T-05 provenance). If it has no source, it doesn't ship or it's labelled "illustrative".
+**Trust rule:** use `.agents/research/charity-shortlist-2026-11-07.json` and `.md` as T-05's source packet after the human skims it. Each record needs `source_name`, `source_url`, and `as_of`; figures are labelled “estimate”. An unsupported figure is omitted or labelled “illustrative”. Do not invent data or sources.
 
 ---
 
@@ -90,29 +92,29 @@ A web app a friend can open on their phone, click through in 5 to 10 minutes, an
 
 ## 5. Roadmap (front-loaded; each line is one session or less)
 
-**Phase 0: Clean up (today)**
-- S0.1 Run the audit prompt (section 1). Output: STATUS.md.
-- S0.2 Resolve housekeeping: merge or close PR #8 (audit fix); decide PR #5 (renumber its card to T-07 or rebase); commit or discard local `.agents` edits; decide T-05 source provenance (recommended: every datum carries `source_url`, `source_name`, `as_of`).
-- S0.3 Write the post-inventory MVP roadmap (this section, refined) and commit PLAN.md.
+**Phase 0: Housekeeping and alignment (Nov 7)**
+- S0.1 Run the audit prompt (section 1). Output: STATUS.md. Done.
+- S0.2 Close PR #8 unmerged; keep PR #5 closed and T-06 canonical. Do not rerun `npm audit fix` now; rerun fresh on main later. Use the designated shortlist packet `.agents/research/charity-shortlist-2026-11-07.json` and `.md` as T-05 source data after the human skims it. The files are not present in this workspace yet.
+- S0.3 Reconcile this roadmap against the flow inventory and decisions (T-08); update sections 5–6. Leave uncommitted per the user's instruction.
 
-**Phase 1: Foundation (Sat to Sun)**
+**Phase 1: Foundation (Nov 8–9)**
 - S1.1 Finish design system essentials in Storybook: colour/type/spacing tokens, Button, Input, Select/Chips, Card (flat), Progress, Sheet/Modal, Nav, Toast. States and dark/light only if cheap.
 - S1.2 App shell: routing, layout, mobile-first container, nav, feedback link, localStorage store.
-- S1.3 Data layer: JSON schema for causes + sources (T-05), 8 to 12 curated causes, loader and types, one unit test.
+- S1.3 Data layer: typed cause/source records, approved MVP organizations and static curated GlobalGiving entries, loader and one unit test. Every record needs source name, URL, and as-of date; label figures “estimate”. Wait for the human's skim of the designated 2026-11-07 shortlist packet; do not invent records or sources. Live GlobalGiving API and non-MVP animal records remain post-MVP.
 
-**Phase 2: Core flow (Mon to Wed), one screen or feature per session**
-- S2.1 Onboarding questions (T-04 first demo slice).
-- S2.2 Cause recommendations list + cause detail with sources.
+**Phase 2: Core donor flow (Nov 9–11), one screen or feature per session. This simulated donor flow is what friends test; `/demo` remains a labelled sidecar.**
+- S2.1 Onboarding questions: Global health, Poverty relief, Animal welfare only; T-19.
+- S2.2 Cause recommendations list + cause detail with sources; equal featured set, no default top pick, plus the separate GiveWell “let experts decide” option.
 - S2.3 Give flow: amount, split, confirm (simulated), success state.
-- S2.4 Impact view (sourced, labelled illustrative where needed).
+- S2.4 Impact view: every figure has the approved source fields or is labelled illustrative.
 - S2.5 History/profile (local).
 - S2.6 Empty, loading, error states across the flow.
 
-**Phase 3: Polish and ship (Thu to Fri)**
-- S3.1 Copy pass (Codex draft, Claude humanise) against VOICE.md.
+**Phase 3: Polish and share the preview (Nov 12–13)**
+- S3.1 Copy pass against VOICE.md: T-04 and its review precede T-03. The six candidate sentences are in STATUS.md for the human to choose three; then run Codex draft → Claude humanise → fresh Codex verify.
 - S3.2 Visual polish: spacing, type, motion (subtle), accessibility (contrast, focus, labels).
-- S3.3 Mobile QA on real phone sizes; fix breakpoints.
-- S3.4 Deploy preview (Vercel/Netlify), shareable URL, analytics-light or none, feedback form.
+- S3.3 Mobile QA on the core simulated donor flow at real phone/tablet sizes and fix breakpoints. T-04's visual handoff covers the `/demo` sidecar, not core route layouts; assess core routes against approved flow requirements and flat tokens.
+- S3.4 Deploy an unlisted Vercel preview after S3.3 passes. Ensure all preview responses are `noindex`; publishing is authorized after mobile QA. Keep the feedback form local.
 - S3.5 Tester brief: 3 tasks to try, 5 questions to answer, one page.
 
 **Cut line if time slips:** drop S2.5 and S2.6 extras first, then impact view detail. Never cut sources or the "Demo" labelling.
@@ -121,16 +123,28 @@ A web app a friend can open on their phone, click through in 5 to 10 minutes, an
 
 ## 6. Live status (agents update this table)
 
-| Step | Status | Branch/PR | Notes |
+| Step | Card(s) | Status | Notes |
 |---|---|---|---|
-| S0.1 Audit | Todo | | |
-| S0.2 Housekeeping | Todo | | PR #5/#6 numbering, PR #8, T-04 review, T-05 provenance, T-03 copy |
-| S0.3 Roadmap committed | Todo | | |
-| S1.1 Design system | Partial | PR #7 merged | Storybook + first components exist |
-| S1.2 App shell | Todo | | |
-| S1.3 Data layer | Todo | | |
-| S2.x | Todo | | |
-| S3.x | Todo | | |
+| S0.1 Audit | — | Done | .agents/STATUS.md records the read-only audit; this planning pass remains uncommitted. |
+| S0.2 Housekeeping | T-07 | Done | PR #5 stays closed; PR #8 closed unmerged. Fresh `npm audit fix` is deferred. Designated packet is the 2026-11-07 shortlist; source skim gates data work. |
+| S0.3 Roadmap reconciled | T-08 | Done | Sections 5–6 record approved causes, data/provenance rules, the core donor test flow, `/demo` sidecar, T-04/T-03 order, and post-QA Vercel preview; left uncommitted. |
+| S1.1 Design system | T-09–T-14 | T-09 Ready; T-10–T-14 Pending | T-09 is the first build card: establish foundations first, then controls and navigation primitives. |
+| S1.2 App shell | T-15–T-16 | Todo | Shell/feedback entry, then browser-local donor state. |
+| S1.3 Data layer | T-17–T-18 | Blocked | The designated `.agents/research/charity-shortlist-2026-11-07.json` and `.md` are absent. Wait for the human's skim before data work. |
+| S2.1 Onboarding | T-19 | Pending | Depends on shell, UI, and data foundation; offers only Global health, Poverty relief, and Animal welfare. |
+| S2.2 Cause discovery | T-20 | Pending | Equal five-organization featured set, separate GiveWell fund, The Humane League as the only MVP animal charity; static curated GlobalGiving entries. |
+| S2.3 Give flow | T-21 | Todo | Core friend-test path; simulated only, no real payment calls. `/demo` stays a sidecar. |
+| S2.4 Impact view | T-22 | Blocked | Requires the designated packet and approved source records; sourced figures are labelled “estimate”; unsupported figures are omitted or “illustrative”. |
+| S2.5 History/profile | T-23 | Todo | Browser-local simulated activity. |
+| S2.6 Empty/loading/error states | T-24–T-27 | Todo | Shared states, then bounded route groups. |
+| S3.1 Copy pass | T-28 | Blocked | Finish/review T-04, choose three of the six STATUS.md voice candidates, then complete T-03 and the two-vendor copy pass. |
+| S3.2 Visual polish | T-29–T-32 | Todo | Shared shell, discovery, give/impact, donor pages. |
+| S3.3 Mobile QA | T-33–T-34 | Blocked | T-33 waits for T-29–T-32; it checks the core donor flow against route requirements and tokens. T-04 is a `/demo` sidecar handoff, not a core layout spec. |
+| S3.4 Preview deploy | T-35 | Blocked | Vercel and post-QA publishing are approved; wait for mobile QA, then deploy unlisted with `noindex`. |
+| S3.5 Tester brief | T-36 | Todo | One page, three tasks, five questions. |
+
+Card paths are .agents/tasks/T-07 through T-36; T-06-flow-inventory.md remains the current inventory card.
+
 
 ---
 
