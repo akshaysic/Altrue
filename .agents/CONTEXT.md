@@ -16,7 +16,7 @@ Next.js 16 App Router, React 18, TypeScript 5.6, Tailwind 3, lucide-react; local
 
 ## Current step
 
-T-09 is done (2026-11-10). Next is T-10 (Input and Select), Ready; recommended model Claude Sonnet 5.5 / normal. Palette is still provisional (accent green `#2E5E45`, no brand approval). T-17/T-18 data work stays blocked until the human confirms they have skimmed the source packet, which is now in the repo.
+T-09 is in Review (a Codex review is still owed). The ordered route to the first friend test is `.agents/FIRST-TEST-PATH.md`; T-10 (Input and Select) is Ready but is not on that path. Recommended model: Claude Sonnet 5.5 / normal. Palette is still provisional (accent green `#2E5E45`, no brand approval). T-17/T-18 data work stays blocked until the human confirms they have skimmed the source packet, which is now in the repo.
 
 ## Key file map
 

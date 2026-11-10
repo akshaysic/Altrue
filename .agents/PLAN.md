@@ -2,7 +2,7 @@
 
 Save as `.agents/PLAN.md` in the Altrue repo. Paste the "Session start" block (section 0) at the top of any new agent session. The agent reads this file, reports where things stand, then does ONLY the next step.
 
-Goal: a sleek, shareable MVP that friends can test by ~Fri 13 Nov 2026.
+Goal: a sleek, shareable MVP that friends can test on a phone. The shortest route there is `.agents/FIRST-TEST-PATH.md`.
 
 ---
 
@@ -92,17 +92,17 @@ A web app a friend can open on their phone, click through in 5 to 10 minutes, an
 
 ## 5. Roadmap (front-loaded; each line is one session or less)
 
-**Phase 0: Housekeeping and alignment (Nov 7)**
+**Phase 0: Housekeeping and alignment**
 - S0.1 Run the audit prompt (section 1). Output: STATUS.md. Done.
 - S0.2 Close PR #8 unmerged; keep PR #5 closed and T-06 canonical. Do not rerun `npm audit fix` now; rerun fresh on main later. Use the designated shortlist packet `.agents/research/charity-shortlist-2026-11-07.json` and `.md` as T-05 source data after the human skims it. The files are now in `.agents/research/`; the human's skim is still the gate.
 - S0.3 Reconcile this roadmap against the flow inventory and decisions (T-08); update sections 5–6. Leave uncommitted per the user's instruction.
 
-**Phase 1: Foundation (Nov 8–9)**
+**Phase 1: Foundation**
 - S1.1 Finish design system essentials in Storybook: colour/type/spacing tokens, Button, Input, Select/Chips, Card (flat), Progress, Sheet/Modal, Nav, Toast. States and dark/light only if cheap.
 - S1.2 App shell: routing, layout, mobile-first container, nav, feedback link, localStorage store.
 - S1.3 Data layer: typed cause/source records, approved MVP organizations and static curated GlobalGiving entries, loader and one unit test. Every record needs source name, URL, and as-of date; label figures “estimate”. Wait for the human's skim of the designated 2026-11-07 shortlist packet; do not invent records or sources. Live GlobalGiving API and non-MVP animal records remain post-MVP.
 
-**Phase 2: Core donor flow (Nov 9–11), one screen or feature per session. This simulated donor flow is what friends test; `/demo` remains a labelled sidecar.**
+**Phase 2: Core donor flow, one screen or feature per session. This simulated donor flow is what friends test; `/demo` remains a labelled sidecar.**
 - S2.1 Onboarding questions: Global health, Poverty relief, Animal welfare only; T-19.
 - S2.2 Cause recommendations list + cause detail with sources; equal featured set, no default top pick, plus the separate GiveWell “let experts decide” option.
 - S2.3 Give flow: amount, split, confirm (simulated), success state.
@@ -110,7 +110,7 @@ A web app a friend can open on their phone, click through in 5 to 10 minutes, an
 - S2.5 History/profile (local).
 - S2.6 Empty, loading, error states across the flow.
 
-**Phase 3: Polish and share the preview (Nov 12–13)**
+**Phase 3: Polish and share the preview**
 - S3.1 Copy pass against VOICE.md: T-04 and its review precede T-03. The six candidate sentences are in STATUS.md for the human to choose three; then run Codex draft → Claude humanise → fresh Codex verify.
 - S3.2 Visual polish: spacing, type, motion (subtle), accessibility (contrast, focus, labels).
 - S3.3 Mobile QA on the core simulated donor flow at real phone/tablet sizes and fix breakpoints. T-04's visual handoff covers the `/demo` sidecar, not core route layouts; assess core routes against approved flow requirements and flat tokens.
@@ -128,7 +128,7 @@ A web app a friend can open on their phone, click through in 5 to 10 minutes, an
 | S0.1 Audit | — | Done | .agents/STATUS.md records the read-only audit; this planning pass remains uncommitted. |
 | S0.2 Housekeeping | T-07 | Done | PR #5 stays closed; PR #8 closed unmerged. Fresh `npm audit fix` is deferred. Designated packet is the 2026-11-07 shortlist; source skim gates data work. |
 | S0.3 Roadmap reconciled | T-08 | Done | Sections 5–6 record approved causes, data/provenance rules, the core donor test flow, `/demo` sidecar, T-04/T-03 order, and post-QA Vercel preview; left uncommitted. |
-| S1.1 Design system | T-09–T-14 | T-09 Done (2026-11-10); T-10 Ready; T-11–T-14 Pending | T-09 named the colour, spacing, size and focus tokens and documented contrast pairs; palette stays provisional. Next: T-10 Input and Select. |
+| S1.1 Design system | T-09–T-14 | T-09 Review; T-10 Ready; T-11–T-14 Pending | T-09 named the colour, spacing, size and focus tokens and documented contrast pairs; palette stays provisional. Next: T-10 Input and Select. |
 | S1.2 App shell | T-15–T-16 | Todo | Shell/feedback entry, then browser-local donor state. |
 | S1.3 Data layer | T-17–T-18 | Blocked | The packet `.agents/research/charity-shortlist-2026-11-07.json` and `.md` is now in the repo (15 entries). Still waiting for the human to confirm they have skimmed it. |
 | S2.1 Onboarding | T-19 | Pending | Depends on shell, UI, and data foundation; offers only Global health, Poverty relief, and Animal welfare. |

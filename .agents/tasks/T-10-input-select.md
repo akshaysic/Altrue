@@ -10,5 +10,6 @@ Acceptance:
 - [ ] Stories cover default, disabled, error, and keyboard-focus states with accessible labels.
 - [ ] Controls use native semantics, support keyboard operation, and match the flat foundations.
 Decisions needed: None.
+Added from T-09 review: also add --ds-radius-pill and --ds-radius-notice tokens and a color: var(--ds-ink) on body, from backup/t09-local (commit 78f2803; it holds only these three small items that main's T-09 lacks).
 Handoff note: Record variants and import paths for onboarding.
 Receipt: Pending execution; record actor/model, weight, outcome, review, lane, and found-not-done.
