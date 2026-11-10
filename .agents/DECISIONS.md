@@ -13,3 +13,4 @@
 - 2026-11-07 — The Humane League is the only MVP animal charity; keep other animal entries in data marked “post-MVP”.
 - 2026-11-07 — GlobalGiving MVP entries are static and curated; the live API feed is post-MVP.
 - 2026-11-10 — T-09 locked the token names (colour, type, spacing, control sizes, focus) but not the palette values. Accent stays green `#2E5E45` as a provisional default; no brand approval exists. `ds-rule` is decorative only (1.27:1); interactive edges use `ink` or `ink-2`.
+- 2026-11-10 — Voice candidates #3, #4 and #6 chosen and recorded in VOICE.md; T-28 moves into the first test path just before T-19.
