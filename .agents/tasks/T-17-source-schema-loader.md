@@ -10,6 +10,6 @@ Acceptance:
 - [ ] Every cause/charity/impact record carries `source_name`, `source_url`, and `as_of`; every displayed figure is labelled “estimate”. Withhold unsupported figures or label explicitly illustrative content “illustrative”.
 - [ ] Model the MVP categories and an explicit MVP/post-MVP flag so non-featured animal records remain stored but excluded from MVP results.
 - [ ] Use only the named packet; do not add tax-deductibility claims or infer missing facts.
-Decisions needed: None; `.agents/research/charity-shortlist-2026-11-07.json` and `.md` are currently absent. Wait until both are supplied and the human has skimmed the packet before implementation.
+Decisions needed: None; `.agents/research/charity-shortlist-2026-11-07.json` and `.md` are now in the repo. Wait until the human has confirmed they skimmed the packet before implementation.
 Handoff note: Record schema, MVP/post-MVP filtering, and the exact packet files used.
 Receipt: Pending execution; record actor/model, weight, outcome, review, lane, and found-not-done.

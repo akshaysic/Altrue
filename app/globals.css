@@ -5,17 +5,35 @@
 :root {
   color-scheme: light;
 
-  /* "Ledger" design-system tokens, proposed and not locked yet.
-     Flat surfaces only: no shadows, glows or gradients. */
+  /* "Ledger" design-system tokens. Flat surfaces only: no shadows, glows or gradients.
+     Every --ds-* name here has a matching ds-* key in tailwind.config.ts; change one, change both.
+     PROVISIONAL: the palette is the Claude Design v0 proposal and has no brand sign-off.
+     Foreground/background pairs are listed with contrast ratios in components/ui/Foundations.mdx. */
+
+  /* Colour */
   --ds-ground: #f6f7f3;
   --ds-ink: #14181b;
   --ds-ink-2: #5b6166;
-  --ds-rule: #dcddd6;
-  --ds-accent: #2e5e45; /* pending: #1f4e79, #8a4b2f, #14181b on trial */
+  --ds-rule: #dcddd6; /* decorative dividers only, 1.27:1 on ground; never use for text or control edges */
+  --ds-accent: #2e5e45; /* PROVISIONAL: #1f4e79, #8a4b2f, #14181b still on trial in Storybook */
   --ds-on-accent: #ffffff;
   --ds-demo: #96533a;
   --ds-notice-bg: #f1e4dc;
   --ds-notice-ink: #7a3f2a;
+  --ds-focus: var(--ds-ink);
+
+  /* Spacing scale (4 px base) */
+  --ds-space-xs: 4px;
+  --ds-space-sm: 8px;
+  --ds-space-md: 16px;
+  --ds-space-lg: 24px;
+  --ds-space-xl: 32px;
+  --ds-space-2xl: 48px;
+
+  /* Control sizes: nothing tappable is smaller than --ds-size-touch */
+  --ds-size-touch: 44px;
+  --ds-size-chip: 48px;
+  --ds-size-button: 56px;
 }
 
 * {
@@ -24,7 +42,7 @@
 
 body {
   margin: 0;
-  background: #f7f8f5;
+  background: var(--ds-ground);
 }
 
 a {

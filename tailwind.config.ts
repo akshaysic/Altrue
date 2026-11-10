@@ -14,7 +14,7 @@ const config: Config = {
         moss: "#4f6f52",
         clay: "#b46b4f",
         skywash: "#dcebf2",
-        // "Ledger" design-system tokens (proposed, see .context/inputs/design-direction.md).
+        // "Ledger" design-system tokens (provisional, see components/ui/Foundations.mdx).
         // Values live as CSS variables in app/globals.css so they can change in one place.
         ds: {
           ground: "var(--ds-ground)",
@@ -25,8 +25,22 @@ const config: Config = {
           "on-accent": "var(--ds-on-accent)",
           demo: "var(--ds-demo)",
           "notice-bg": "var(--ds-notice-bg)",
-          "notice-ink": "var(--ds-notice-ink)"
+          "notice-ink": "var(--ds-notice-ink)",
+          focus: "var(--ds-focus)"
         }
+      },
+      // Named spacing and control sizes; values live in app/globals.css.
+      // Use as p-ds-md, gap-ds-sm, min-h-ds-touch, h-ds-button and so on.
+      spacing: {
+        "ds-xs": "var(--ds-space-xs)",
+        "ds-sm": "var(--ds-space-sm)",
+        "ds-md": "var(--ds-space-md)",
+        "ds-lg": "var(--ds-space-lg)",
+        "ds-xl": "var(--ds-space-xl)",
+        "ds-2xl": "var(--ds-space-2xl)",
+        "ds-touch": "var(--ds-size-touch)",
+        "ds-chip": "var(--ds-size-chip)",
+        "ds-button": "var(--ds-size-button)"
       },
       fontFamily: {
         ds: ['"Instrument Sans"', '"Helvetica Neue"', "Arial", "sans-serif"],

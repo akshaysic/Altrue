@@ -94,7 +94,7 @@ A web app a friend can open on their phone, click through in 5 to 10 minutes, an
 
 **Phase 0: Housekeeping and alignment (Nov 7)**
 - S0.1 Run the audit prompt (section 1). Output: STATUS.md. Done.
-- S0.2 Close PR #8 unmerged; keep PR #5 closed and T-06 canonical. Do not rerun `npm audit fix` now; rerun fresh on main later. Use the designated shortlist packet `.agents/research/charity-shortlist-2026-11-07.json` and `.md` as T-05 source data after the human skims it. The files are not present in this workspace yet.
+- S0.2 Close PR #8 unmerged; keep PR #5 closed and T-06 canonical. Do not rerun `npm audit fix` now; rerun fresh on main later. Use the designated shortlist packet `.agents/research/charity-shortlist-2026-11-07.json` and `.md` as T-05 source data after the human skims it. The files are now in `.agents/research/`; the human's skim is still the gate.
 - S0.3 Reconcile this roadmap against the flow inventory and decisions (T-08); update sections 5–6. Leave uncommitted per the user's instruction.
 
 **Phase 1: Foundation (Nov 8–9)**
@@ -128,13 +128,13 @@ A web app a friend can open on their phone, click through in 5 to 10 minutes, an
 | S0.1 Audit | — | Done | .agents/STATUS.md records the read-only audit; this planning pass remains uncommitted. |
 | S0.2 Housekeeping | T-07 | Done | PR #5 stays closed; PR #8 closed unmerged. Fresh `npm audit fix` is deferred. Designated packet is the 2026-11-07 shortlist; source skim gates data work. |
 | S0.3 Roadmap reconciled | T-08 | Done | Sections 5–6 record approved causes, data/provenance rules, the core donor test flow, `/demo` sidecar, T-04/T-03 order, and post-QA Vercel preview; left uncommitted. |
-| S1.1 Design system | T-09–T-14 | T-09 Ready; T-10–T-14 Pending | T-09 is the first build card: establish foundations first, then controls and navigation primitives. |
+| S1.1 Design system | T-09–T-14 | T-09 Done (2026-11-10); T-10 Ready; T-11–T-14 Pending | T-09 named the colour, spacing, size and focus tokens and documented contrast pairs; palette stays provisional. Next: T-10 Input and Select. |
 | S1.2 App shell | T-15–T-16 | Todo | Shell/feedback entry, then browser-local donor state. |
-| S1.3 Data layer | T-17–T-18 | Blocked | The designated `.agents/research/charity-shortlist-2026-11-07.json` and `.md` are absent. Wait for the human's skim before data work. |
+| S1.3 Data layer | T-17–T-18 | Blocked | The packet `.agents/research/charity-shortlist-2026-11-07.json` and `.md` is now in the repo (15 entries). Still waiting for the human to confirm they have skimmed it. |
 | S2.1 Onboarding | T-19 | Pending | Depends on shell, UI, and data foundation; offers only Global health, Poverty relief, and Animal welfare. |
 | S2.2 Cause discovery | T-20 | Pending | Equal five-organization featured set, separate GiveWell fund, The Humane League as the only MVP animal charity; static curated GlobalGiving entries. |
 | S2.3 Give flow | T-21 | Todo | Core friend-test path; simulated only, no real payment calls. `/demo` stays a sidecar. |
-| S2.4 Impact view | T-22 | Blocked | Requires the designated packet and approved source records; sourced figures are labelled “estimate”; unsupported figures are omitted or “illustrative”. |
+| S2.4 Impact view | T-22 | Blocked | Requires the human-skimmed packet and approved source records; sourced figures are labelled “estimate”; unsupported figures are omitted or “illustrative”. |
 | S2.5 History/profile | T-23 | Todo | Browser-local simulated activity. |
 | S2.6 Empty/loading/error states | T-24–T-27 | Todo | Shared states, then bounded route groups. |
 | S3.1 Copy pass | T-28 | Blocked | Finish/review T-04, choose three of the six STATUS.md voice candidates, then complete T-03 and the two-vendor copy pass. |

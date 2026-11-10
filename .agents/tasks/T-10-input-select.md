@@ -1,5 +1,5 @@
 # T-10 · Add accessible Input and Select
-Status: Ready after T-09
+Status: Ready
 Model: Craft — Claude Sonnet 5.5 / normal
 Weight: S1 A0 R0 C1 T2 = 4
 Goal: Provide reusable form controls for onboarding and settings.

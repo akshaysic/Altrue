@@ -5,7 +5,7 @@ Audit snapshot: 2026-11-07. Planning only; no app code or checks run. Scope and 
 ## Decisions I need from the human
 
 - No product decision blocks T-09. Before T-28 copy work, choose three of the six candidates below; recommendation: #3, #4, and #6.
-- Input gate, not a product decision: `.agents/research/charity-shortlist-2026-11-07.json` and `.md` are absent. Supply both for the promised skim before T-17/T-18 data work.
+- Input gate, not a product decision: `.agents/research/charity-shortlist-2026-11-07.json` and `.md` are now in the repo (updated 2026-11-10). T-17/T-18 data work still waits for the human's skim.
 
 ### Voice candidates (draft only)
 
@@ -42,7 +42,7 @@ Cause, nonprofit, impact, plan, report, and donation records are static TypeScri
 - MVP causes: Global health, Poverty relief, Animal welfare only. Equal featured set: GiveDirectly, Malaria Consortium, Against Malaria Foundation, Helen Keller Intl, New Incentives; no default top pick. GiveWell Top Charities Fund is a separate “let experts decide” option.
 - The Humane League is the only MVP animal charity; retain other animal records as “post-MVP”. GlobalGiving is static/curated in MVP; live API is post-MVP.
 - T-04 precedes T-03. T-04/T-05 cover the labelled `/demo` sidecar; friends test the separate simulated donor flow. T-04 is not the core route layout spec. Vercel preview/publishing is authorized after mobile QA, unlisted and noindex.
-- T-09 is Ready with Claude Sonnet 5.5 / normal. T-17/T-18 remain blocked on the absent packet; three voice candidates remain to be selected before T-28.
+- T-09 is done (2026-11-10); T-10 is next, Ready with Claude Sonnet 5.5 / normal. T-17/T-18 remain blocked on the human's skim of the packet; three voice candidates remain to be selected before T-28.
 
 ## G. Friends-test risks
 

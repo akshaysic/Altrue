@@ -16,13 +16,13 @@ Next.js 16 App Router, React 18, TypeScript 5.6, Tailwind 3, lucide-react; local
 
 ## Current step
 
-T-09 — Ready; first build card. Recommended model: Claude Sonnet 5.5 / normal. T-17/T-18 data work is blocked until the designated source packet is present and the human has skimmed it.
+T-09 is done (2026-11-10). Next is T-10 (Input and Select), Ready; recommended model Claude Sonnet 5.5 / normal. Palette is still provisional (accent green `#2E5E45`, no brand approval). T-17/T-18 data work stays blocked until the human confirms they have skimmed the source packet, which is now in the repo.
 
 ## Key file map
 
 - Roadmap/status: `.agents/PLAN.md` §6; current audit: `.agents/STATUS.md`.
 - Decisions: `.agents/DECISIONS.md`; one-session briefs: `.agents/tasks/T-<nn>-*.md`.
-- Flow inventory: `.agents/research/flows-and-screens.md`; T-05 source packet should be `.agents/research/charity-shortlist-2026-11-07.json` and `.md` (currently absent).
+- Flow inventory: `.agents/research/flows-and-screens.md`; T-05 source packet is `.agents/research/charity-shortlist-2026-11-07.json` and `.md` (now present, 15 entries; the human's skim is still the gate).
 - Copy voice: `.agents/VOICE.md`; demo-slice detail: `.agents/design/first-demo-slice-plan-OLD.md` (reference only).
 - T-04's visual handoff is for the `/demo` sidecar, not the core donor-flow layout.
 - App routes: `app/`; reusable UI: `components/ui/`; source types/data: `lib/types/`, `lib/seed/`; local state: `lib/store/`.
