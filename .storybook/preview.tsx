@@ -34,7 +34,7 @@ const preview: Preview = {
   ],
   parameters: {
     options: {
-      storySort: { order: ['Design system', ['Foundations', '*'], 'Pages', 'Scaffold'] },
+      storySort: { order: ['Design system', ['Foundations', '*'], 'Pages'] },
     },
     // Every route lives in the App Router, so mock next/navigation (Link, notFound) the App Router way.
     nextjs: {
@@ -59,7 +59,7 @@ const preview: Preview = {
       // 'todo' - show a11y violations in the test UI only
       // 'error' - fail CI on a11y violations
       // 'off' - skip a11y checks entirely
-      test: 'todo'
+      test: 'error'
     }
   },
 };

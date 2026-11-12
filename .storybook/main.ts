@@ -2,12 +2,10 @@ import type { StorybookConfig } from '@storybook/nextjs-vite';
 
 const config: StorybookConfig = {
   // Stories sit next to the code they show. The prefixes split the sidebar into
-  // the new design system, the app's routes, and the placeholder scaffold it replaces.
+  // the design system and the app's routes.
   "stories": [
     { "directory": "../components/ui", "files": "**/*.@(mdx|stories.@(ts|tsx))", "titlePrefix": "Design system" },
-    { "directory": "../app", "files": "**/*.stories.@(ts|tsx)", "titlePrefix": "Pages" },
-    { "directory": "../components", "files": "*.stories.@(ts|tsx)", "titlePrefix": "Scaffold" },
-    { "directory": "../components/layout", "files": "**/*.stories.@(ts|tsx)", "titlePrefix": "Scaffold/layout" }
+    { "directory": "../app", "files": "**/*.stories.@(ts|tsx)", "titlePrefix": "Pages" }
   ],
   "addons": [
     "@chromatic-com/storybook",

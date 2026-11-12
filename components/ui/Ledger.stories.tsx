@@ -1,6 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { expect } from 'storybook/test';
+import { formatCents } from '@/lib/formatters';
+import { buildSplit } from '@/lib/mvpSplit';
 import { Ledger, LedgerRow } from './Ledger';
+import { AREAS } from './storyData';
+
+// One real line from the $10 demo split, so the charity name and category come from the seed.
+const [firstLine] = buildSplit({ areas: AREAS, amountCents: 1000, letExpertsDecide: false });
 
 const meta = {
   component: LedgerRow,
@@ -29,9 +35,9 @@ export const Default: Story = {
 };
 
 export const WithDetail: Story = {
-  args: { label: 'Platform fee', value: '$0', detail: 'Mocked in this demo' },
+  args: { label: firstLine.organization.name, value: formatCents(firstLine.cents), detail: firstLine.organization.category },
 };
 
 export const Total: Story = {
-  args: { label: 'Goes to causes', value: '$10', emphasis: true },
+  args: { label: 'Total', value: '$10', emphasis: true },
 };

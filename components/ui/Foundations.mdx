@@ -32,14 +32,19 @@ The accent is still undecided. Use the **Accent** menu in the toolbar to try eac
 
 Use only these pairings for text and control labels. Ratios are WCAG 2.x, computed from the hex values.
 
-| Foreground | Background | Ratio | Use |
-|---|---|---|---|
-| ink | ground | 16.6:1 | Body text, headings, secondary buttons |
-| ink-2 | ground | 5.8:1 | Secondary text, labels |
-| accent (green) | ground | 7.0:1 | Accent text and selected outlines |
-| on-accent | accent (green) | 7.5:1 | Primary button label |
-| demo | ground | 5.4:1 | Demo labels and caveat markers |
-| notice-ink | notice-bg | 6.6:1 | Notice body text |
+<table>
+  <thead>
+    <tr><th>Foreground</th><th>Background</th><th>Ratio</th><th>Use</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>ink</td><td>ground</td><td>16.6:1</td><td>Body text, headings, secondary buttons</td></tr>
+    <tr><td>ink-2</td><td>ground</td><td>5.8:1</td><td>Secondary text, labels</td></tr>
+    <tr><td>accent (green)</td><td>ground</td><td>7.0:1</td><td>Accent text and selected outlines</td></tr>
+    <tr><td>on-accent</td><td>accent (green)</td><td>7.5:1</td><td>Primary button label</td></tr>
+    <tr><td>demo</td><td>ground</td><td>5.4:1</td><td>Demo labels and caveat markers</td></tr>
+    <tr><td>notice-ink</td><td>notice-bg</td><td>6.6:1</td><td>Notice body text</td></tr>
+  </tbody>
+</table>
 
 The other accent candidates also clear 4.5:1 with white text (blue 8.7:1, rust 6.7:1, ink 17.9:1) and as accent text on ground (blue 8.1:1, rust 6.2:1, ink 16.6:1), so the Accent menu is safe to try.
 
@@ -57,7 +62,7 @@ Instrument Sans for everything, with tabular figures for money. Geist Mono at 12
 
 <Typeset fontFamily="'Instrument Sans'" fontWeight={700} fontSizes={[88, 72, 56]} sampleText="$10" />
 <Typeset fontFamily="'Instrument Sans'" fontWeight={700} fontSizes={[32]} sampleText="Check your plan" />
-<Typeset fontFamily="'Instrument Sans'" fontWeight={600} fontSizes={[17]} sampleText="Global Health · $4" />
+<Typeset fontFamily="'Instrument Sans'" fontWeight={600} fontSizes={[17]} sampleText="Poverty relief · $4" />
 <Typeset fontFamily="'Instrument Sans'" fontWeight={400} fontSizes={[16, 14]} sampleText="This is a starting point. You can adjust the split before confirming." />
 <Typeset fontFamily="'Geist Mono'" fontWeight={400} fontSizes={[12]} sampleText="DEMO ESTIMATE · SOURCE: DEMO SEED" />
 
@@ -73,14 +78,19 @@ Instrument Sans for everything, with tabular figures for money. Geist Mono at 12
 
 A 4 px base. Use the named steps instead of arbitrary values.
 
-| Token | Value | Tailwind | Use |
-|---|---|---|---|
-| xs | 4 px | `p-ds-xs` | Icon gaps, tight label stacks |
-| sm | 8 px | `gap-ds-sm` | Gap between chips, related rows |
-| md | 16 px | `p-ds-md` | Default padding and screen gutters |
-| lg | 24 px | `gap-ds-lg` | Space between groups |
-| xl | 32 px | `mt-ds-xl` | Between sections |
-| 2xl | 48 px | `py-ds-2xl` | Page-level breathing room |
+<table>
+  <thead>
+    <tr><th>Token</th><th>Value</th><th>Tailwind</th><th>Use</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>xs</td><td>4 px</td><td><code>p-ds-xs</code></td><td>Icon gaps, tight label stacks</td></tr>
+    <tr><td>sm</td><td>8 px</td><td><code>gap-ds-sm</code></td><td>Gap between chips, related rows</td></tr>
+    <tr><td>md</td><td>16 px</td><td><code>p-ds-md</code></td><td>Default padding and screen gutters</td></tr>
+    <tr><td>lg</td><td>24 px</td><td><code>gap-ds-lg</code></td><td>Space between groups</td></tr>
+    <tr><td>xl</td><td>32 px</td><td><code>mt-ds-xl</code></td><td>Between sections</td></tr>
+    <tr><td>2xl</td><td>48 px</td><td><code>py-ds-2xl</code></td><td>Page-level breathing room</td></tr>
+  </tbody>
+</table>
 
 Control sizes use the same scale: `touch` 44 px (the floor for anything tappable), `chip` 48 px, `button` 56 px. Use them as `min-h-ds-touch`, `h-ds-chip` and `h-ds-button`.
 
