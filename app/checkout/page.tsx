@@ -1,19 +1,7 @@
-import { DecisionLayout } from "@/components/layout/DecisionLayout";
-import { PlaceholderCard } from "@/components/PlaceholderCard";
-import { MOCKED_FEE_CENTS } from "@/lib/constants";
-import { demoPlans } from "@/lib/seed";
-import { formatCents } from "@/lib/formatters";
+import { redirect } from "next/navigation";
 
-export default function CheckoutPage() {
-  const activePlan = demoPlans[0];
-
-  return (
-    <DecisionLayout eyebrow="Mock checkout" title="Confirm a mocked plan" description="Payments are not implemented. This page must not collect payment details or move money.">
-      <PlaceholderCard title="Payment placeholder">
-        <p>Monthly amount: {formatCents(activePlan.monthlyAmountCents)}</p>
-        <p className="mt-2">Mocked platform fee: {formatCents(MOCKED_FEE_CENTS)}</p>
-        <p className="mt-2">Status after a future confirmation: mocked plan activation only.</p>
-      </PlaceholderCard>
-    </DecisionLayout>
-  );
+// Retired for the prototype: this scaffold screen showed the old demo causes and unsourced demo metrics.
+// The data files stay; T-21/T-22 rebuild these routes on sourced data.
+export default function RetiredPage() {
+  redirect("/causes");
 }

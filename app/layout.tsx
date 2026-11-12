@@ -6,6 +6,7 @@ import "@fontsource/instrument-sans/700.css";
 import "@fontsource/geist-mono/400.css";
 import "@fontsource/geist-mono/500.css";
 import "./globals.css";
+import { DemoBanner } from "@/components/layout/DemoBanner";
 
 export const metadata: Metadata = {
   title: "Altrue MVP",
@@ -20,7 +21,9 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body className="bg-ds-ground font-ds text-ds-ink antialiased">{children}</body>
+      <body className="bg-ds-ground font-ds text-ds-ink antialiased"><DemoBanner />
+        {children}
+      </body>
     </html>
   );
 }
