@@ -1,31 +1,16 @@
-import { DecisionLayout } from "@/components/layout/DecisionLayout";
-import { PlaceholderCard } from "@/components/PlaceholderCard";
-import { DEFAULT_MONTHLY_AMOUNTS_CENTS } from "@/lib/constants";
-import { causes } from "@/lib/seed";
-import { formatCents } from "@/lib/formatters";
+import { OnboardingForm } from "@/components/OnboardingForm";
+import { Screen } from "@/components/layout/Screen";
+import { copy } from "@/lib/copy";
+import { getMvpCauses } from "@/lib/seed/causes";
 
 export default function OnboardingPage() {
+  // Only the three MVP causes. Labels are the canonical MVP category names.
+  const options = getMvpCauses().map((cause) => ({ id: cause.id, label: cause.mvpCategory ?? cause.name }));
+
   return (
-    <DecisionLayout eyebrow="Onboarding" title="Select causes and a monthly amount" description="This placeholder shows the first donor decision points without saving data yet.">
-      <div className="grid gap-5">
-        <PlaceholderCard title="Cause multi-select placeholder">
-          <div className="grid gap-2 md:grid-cols-2">
-            {causes.map((cause) => (
-              <div className="rounded-md bg-slate-50 p-3 text-sm" key={cause.id}>{cause.name}</div>
-            ))}
-          </div>
-        </PlaceholderCard>
-        <PlaceholderCard title="Monthly amount defaults">
-          <div className="flex flex-wrap gap-2">
-            {DEFAULT_MONTHLY_AMOUNTS_CENTS.map((amount) => (
-              <span className="rounded-md bg-skywash px-3 py-2 text-sm font-medium text-ink" key={amount}>
-                {formatCents(amount)}
-              </span>
-            ))}
-            <span className="rounded-md bg-skywash px-3 py-2 text-sm font-medium text-ink">Custom</span>
-          </div>
-        </PlaceholderCard>
-      </div>
-    </DecisionLayout>
+    <Screen>
+      <h1 className="font-ds text-ds-h1 text-ds-ink">{copy.onboarding.title}</h1>
+      <OnboardingForm options={options} />
+    </Screen>
   );
 }
