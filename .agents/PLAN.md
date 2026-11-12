@@ -128,7 +128,7 @@ A web app a friend can open on their phone, click through in 5 to 10 minutes, an
 | S0.1 Audit | — | Done | .agents/STATUS.md records the read-only audit; this planning pass remains uncommitted. |
 | S0.2 Housekeeping | T-07 | Done | PR #5 stays closed; PR #8 closed unmerged. Fresh `npm audit fix` is deferred. Designated packet is the 2026-11-07 shortlist; source skim gates data work. |
 | S0.3 Roadmap reconciled | T-08 | Done | Sections 5–6 record approved causes, data/provenance rules, the core donor test flow, `/demo` sidecar, T-04/T-03 order, and post-QA Vercel preview; left uncommitted. |
-| S1.1 Design system | T-09–T-14 | T-09 Review; T-10 Ready; T-11–T-14 Pending | T-09 named the colour, spacing, size and focus tokens and documented contrast pairs; palette stays provisional. Next: T-10 Input and Select. |
+| S1.1 Design system | T-09–T-14 | T-09 Done (Codex review 2026-11-11); T-11 Done (self-check 2026-11-12); T-10/T-12–T-14 deferred | Button/CauseChip states, keyboard interaction, focus, hit targets and contrast passed checks, including 55 story tests and 390 px browser checks. Palette stays provisional. Next in FIRST-TEST-PATH.md: T-17, gated on the human's source-packet skim. T-10/T-12–T-14 wait until after the first friend test. |
 | S1.2 App shell | T-15–T-16 | Todo | Shell/feedback entry, then browser-local donor state. |
 | S1.3 Data layer | T-17–T-18 | Blocked | The packet `.agents/research/charity-shortlist-2026-11-07.json` and `.md` is now in the repo (15 entries). Still waiting for the human to confirm they have skimmed it. |
 | S2.1 Onboarding | T-19 | Pending | Depends on shell, UI, and data foundation; offers only Global health, Poverty relief, and Animal welfare. |
