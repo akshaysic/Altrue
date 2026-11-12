@@ -3,8 +3,8 @@
 // Charity names, summaries, figures, evidence and sources come from lib/seed/sources.ts (copied from the source packet), not from here.
 // Rule: no facts or numbers in this file.
 
-/** PLACEHOLDER: where the footer's feedback link goes. Swap for a mailto: or a form URL when there is one. */
-export const PLACEHOLDER_FEEDBACK_HREF = "/feedback";
+/** Where the footer's feedback link goes. */
+export const FEEDBACK_HREF = "mailto:akshaysic@gmail.com?subject=Altrue%20demo%20feedback";
 
 export const PLACEHOLDER_COPY = {
   demoBanner: "Demo: no money moves",
