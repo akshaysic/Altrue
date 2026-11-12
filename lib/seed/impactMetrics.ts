@@ -1,4 +1,6 @@
-import type { ImpactMetric } from "@/lib/types";
+import type { ImpactMetric, SourcedImpactMetric } from "@/lib/types";
+import { getCauseIdForCategory } from "@/lib/seed/causes";
+import { curatedOrganizations, selectMvp } from "@/lib/seed/sources";
 
 export const impactMetrics: ImpactMetric[] = [
   { id: "nets-funded", causeId: "global-health", name: "Mosquito nets funded", unit: "nets", description: "Estimated mosquito net equivalents supported.", costPerUnitCents: 250, source: "Demo seed estimate", caveat: "Average costs vary by program and region.", isDemo: true },
@@ -13,4 +15,22 @@ export const impactMetrics: ImpactMetric[] = [
 
 export function getImpactMetricsByCauseId(causeId: string) {
   return impactMetrics.filter((metric) => metric.causeId === causeId);
+}
+
+/**
+ * Sourced figures for the MVP organizations, one per packet figure, each labelled "estimate".
+ * The records above are demo/illustrative placeholders (isDemo: true) with no source URL, so the
+ * MVP flow reads these instead. Figures missing from the packet are omitted, never filled in.
+ */
+export const sourcedImpactMetrics: SourcedImpactMetric[] = selectMvp(curatedOrganizations).flatMap((org) =>
+  org.figures.map((figure, index) => ({
+    ...figure,
+    id: `${org.id}-figure-${index + 1}`,
+    organizationId: org.id,
+    causeId: getCauseIdForCategory(org.category) ?? ""
+  }))
+);
+
+export function getSourcedImpactMetricsByOrganizationId(organizationId: string) {
+  return sourcedImpactMetrics.filter((metric) => metric.organizationId === organizationId);
 }

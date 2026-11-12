@@ -15,6 +15,15 @@ export default defineConfig({
   test: {
     projects: [
       {
+        // Plain Node tests for data and logic, e.g. lib/seed/causes.test.ts. Run: npm test
+        resolve: { alias: { '@': dirname } },
+        test: {
+          name: 'unit',
+          include: ['lib/**/*.test.ts'],
+          environment: 'node',
+        },
+      },
+      {
         extends: true,
         plugins: [
           // The plugin will run tests for the stories defined in your Storybook config
