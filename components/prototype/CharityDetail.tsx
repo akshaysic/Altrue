@@ -70,7 +70,7 @@ export function CharityDetail({ charity }: { charity: SourcedCharity }) {
       <section aria-labelledby="source-heading" className="mt-ds-xl border-t border-ds-rule pt-ds-md">
         <h2 id="source-heading" className="text-ds-row">{copy.sourceHeading}</h2>
         <SourceLink href={charity.source_url} name={charity.source_name} className="mt-ds-xs" />
-        <dl className="mt-ds-sm grid grid-cols-[auto_1fr] gap-x-ds-md gap-y-ds-xs">
+        <dl className="mt-ds-sm grid grid-cols-[auto_1fr] items-baseline gap-x-ds-md gap-y-ds-xs">
           <dt><DemoTag>{copy.asOfLabel}</DemoTag></dt>
           <dd className="font-ds-mono text-ds-mono text-ds-ink">{charity.source_as_of}</dd>
           <dt><DemoTag>{copy.retrievedLabel}</DemoTag></dt>
