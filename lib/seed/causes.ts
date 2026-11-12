@@ -1,4 +1,5 @@
-import type { Cause } from "@/lib/types";
+import type { Cause, CuratedOrganization, Provenance } from "@/lib/types";
+import { curatedOrganizations, selectMvp } from "@/lib/seed/sources";
 
 export const causes: Cause[] = [
   {
@@ -13,7 +14,9 @@ export const causes: Cause[] = [
     tags: ["health", "prevention", "evidence-backed", "global"],
     uncertaintyNotes: ["Health estimates rely on average program costs and may not map directly to one donor's dollars."],
     isActive: true,
-    sortOrder: 1
+    sortOrder: 1,
+    mvpStatus: "mvp",
+    mvpCategory: "Global health"
   },
   {
     id: "hunger-food-security",
@@ -27,7 +30,8 @@ export const causes: Cause[] = [
     tags: ["food", "nutrition", "local", "emergency"],
     uncertaintyNotes: ["Meal-equivalent estimates vary by region and provider."],
     isActive: true,
-    sortOrder: 2
+    sortOrder: 2,
+    mvpStatus: "post-mvp"
   },
   {
     id: "climate-environment",
@@ -41,7 +45,8 @@ export const causes: Cause[] = [
     tags: ["climate", "environment", "conservation", "long-term"],
     uncertaintyNotes: ["Climate estimates can have long time horizons and need methodology caveats."],
     isActive: true,
-    sortOrder: 3
+    sortOrder: 3,
+    mvpStatus: "post-mvp"
   },
   {
     id: "education-opportunity",
@@ -55,7 +60,8 @@ export const causes: Cause[] = [
     tags: ["education", "youth", "opportunity", "long-term"],
     uncertaintyNotes: ["Education outcomes are long-term and hard to attribute to a single donation."],
     isActive: true,
-    sortOrder: 4
+    sortOrder: 4,
+    mvpStatus: "post-mvp"
   },
   {
     id: "poverty-economic-mobility",
@@ -69,7 +75,9 @@ export const causes: Cause[] = [
     tags: ["poverty", "mobility", "housing", "cash"],
     uncertaintyNotes: ["Economic mobility depends on many factors beyond one program."],
     isActive: true,
-    sortOrder: 5
+    sortOrder: 5,
+    mvpStatus: "mvp",
+    mvpCategory: "Poverty relief"
   },
   {
     id: "crisis-relief",
@@ -83,7 +91,8 @@ export const causes: Cause[] = [
     tags: ["crisis", "disaster", "refugees", "urgent"],
     uncertaintyNotes: ["Crisis estimates may become outdated and should include reporting dates."],
     isActive: true,
-    sortOrder: 6
+    sortOrder: 6,
+    mvpStatus: "post-mvp"
   },
   {
     id: "animal-welfare",
@@ -97,7 +106,9 @@ export const causes: Cause[] = [
     tags: ["animals", "shelter", "veterinary", "habitat"],
     uncertaintyNotes: ["Animal welfare metrics vary widely by species, geography, and care type."],
     isActive: true,
-    sortOrder: 7
+    sortOrder: 7,
+    mvpStatus: "mvp",
+    mvpCategory: "Animal welfare"
   },
   {
     id: "mental-health",
@@ -111,10 +122,36 @@ export const causes: Cause[] = [
     tags: ["mental-health", "care", "community", "support"],
     uncertaintyNotes: ["Mental health reporting should focus on access and capacity, not guaranteed wellness outcomes."],
     isActive: true,
-    sortOrder: 8
+    sortOrder: 8,
+    mvpStatus: "post-mvp"
   }
 ];
 
 export function getCauseBySlug(slug: string) {
   return causes.find((cause) => cause.slug === slug);
+}
+
+/** The three MVP categories only: Global health, Poverty relief, Animal welfare. */
+export function getMvpCauses(): Cause[] {
+  return causes.filter((cause) => cause.mvpStatus === "mvp");
+}
+
+const causeIdByCategory: Record<string, string> = {
+  "Global health": "global-health",
+  "Poverty relief": "poverty-economic-mobility",
+  "Animal welfare": "animal-welfare"
+};
+
+/** MVP organizations for one cause; empty for post-MVP causes. */
+export function getMvpOrganizationsByCauseId(causeId: string): CuratedOrganization[] {
+  return selectMvp(curatedOrganizations).filter((org) => causeIdByCategory[org.category] === causeId);
+}
+
+/** A cause's sources are those of its MVP organizations, so cause claims stay traceable. */
+export function getCauseSources(causeId: string): Provenance[] {
+  return getMvpOrganizationsByCauseId(causeId).map(({ source_name, source_url, as_of }) => ({ source_name, source_url, as_of }));
+}
+
+export function getCauseIdForCategory(category: string): string | undefined {
+  return causeIdByCategory[category];
 }
