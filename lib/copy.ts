@@ -29,7 +29,8 @@ export const PLACEHOLDER_COPY = {
     animalHeading: "Animal welfare",
     noFigure: "No figure sourced yet.",
     sourceLink: "Source",
-    detailsLink: "Details"
+    detailsLink: "Details",
+    setAmount: "Set a monthly amount"
   },
 
   detail: {
@@ -43,6 +44,33 @@ export const PLACEHOLDER_COPY = {
     asOfLabel: "As of",
     retrievedLabel: "Retrieved",
     externalHint: "opens in a new tab"
+  },
+
+  give: {
+    eyebrow: "Step 3",
+    title: "How much each month?",
+    amountCaption: "every month",
+    sliderLabel: "Monthly amount",
+    causesLabel: "Your causes",
+    changeCauses: "Change causes",
+    expertsLabel: "Let experts decide",
+    expertsNote: "Put the whole amount in one fund chosen by experts.",
+    splitHeading: "Illustrative split, demo only",
+    splitNote: "A simple equal split. Placeholder rule, not advice.",
+    total: "Total each month",
+    continue: "Review (demo)"
+  },
+
+  confirm: {
+    eyebrow: "Step 4",
+    title: "Demo confirmation",
+    notice: "Demo: no money moves",
+    noticeBody: "Nothing was charged and nothing was sent. This is a pretend gift to try the flow.",
+    summary: (amount: string) => `Pretend monthly gift: ${amount}`,
+    splitHeading: "Illustrative split, demo only",
+    sourcesNote: "Each line links to its source. Figures on the charity pages are estimates in USD, as sourced. They are not applied to your amount.",
+    changeAmount: "Change amount",
+    startAgain: "Start again"
   },
 
   footer: {
