@@ -6,6 +6,7 @@ import "@fontsource/instrument-sans/700.css";
 import "@fontsource/geist-mono/400.css";
 import "@fontsource/geist-mono/500.css";
 import "./globals.css";
+import { DemoBanner } from "@/components/layout/DemoBanner";
 
 export const metadata: Metadata = {
   title: "Altrue MVP",
@@ -15,7 +16,10 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <DemoBanner />
+        {children}
+      </body>
     </html>
   );
 }
