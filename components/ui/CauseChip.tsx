@@ -1,3 +1,5 @@
+"use client";
+
 import { Check } from "lucide-react";
 import clsx from "clsx";
 
@@ -18,14 +20,14 @@ export function CauseChip({ label, selected = false, onToggle, disabled = false 
       disabled={disabled}
       onClick={() => onToggle?.(!selected)}
       className={clsx(
-        "inline-flex min-h-12 items-center gap-2 rounded-full border px-5 font-ds text-ds-body font-medium",
-        "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ds-ink",
-        "disabled:cursor-not-allowed disabled:opacity-40",
+        "inline-flex min-h-ds-chip min-w-ds-touch max-w-full items-center gap-ds-sm rounded-full border px-ds-md py-ds-sm text-left font-ds text-ds-body font-medium",
+        "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ds-focus",
+        "disabled:cursor-not-allowed disabled:border-ds-ink-2 disabled:bg-ds-ground disabled:text-ds-ink-2",
         selected ? "border-ds-accent bg-ds-accent text-ds-on-accent" : "border-ds-ink text-ds-ink enabled:hover:bg-ds-rule"
       )}
     >
-      {selected ? <Check aria-hidden size={18} strokeWidth={2.5} /> : null}
-      {label}
+      <Check aria-hidden size={18} strokeWidth={2.5} className={clsx("shrink-0", !selected && "invisible")} />
+      <span className="min-w-0 break-words">{label}</span>
     </button>
   );
 }

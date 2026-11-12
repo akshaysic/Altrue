@@ -16,7 +16,7 @@ Next.js 16 App Router, React 18, TypeScript 5.6, Tailwind 3, lucide-react; local
 
 ## Current step
 
-T-09 is Done after independent Codex review on 2026-11-11 (lint, typecheck, Storybook build, and all 46 story tests passed). Next is T-11 (Button and CauseChip states), Ready, following `.agents/FIRST-TEST-PATH.md`; T-10 (Input and Select) is deferred until after the first friend test. Recommended build model: Claude Sonnet 5.5 / normal. Palette is still provisional (accent green `#2E5E45`, no brand approval). T-17/T-18 data work stays blocked until the human confirms they have skimmed the source packet, which is now in the repo.
+T-09 passed independent Codex review on 2026-11-11. T-11 (Button and CauseChip states) is Done after the user's Codex go-ahead on 2026-11-12: lint, typecheck, Storybook build, 55 story tests, app build and 390 px accessibility/contrast checks passed. Next in `.agents/FIRST-TEST-PATH.md` is T-17 (source schema and loader), blocked until the human confirms they have skimmed the source packet; T-18 shares that gate. T-10 (Input and Select) remains deferred until after the first friend test. Palette is still provisional (accent green `#2E5E45`, no brand approval).
 
 ## Key file map
 
