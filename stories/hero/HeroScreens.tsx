@@ -1,273 +1,354 @@
 "use client";
 
-import { useState } from "react";
-import clsx from "clsx";
+import { useId, useState } from "react";
+import { ChevronLeft } from "lucide-react";
 import { Amount } from "@/components/ui/Amount";
 import { Button } from "@/components/ui/Button";
 import { CauseChip } from "@/components/ui/CauseChip";
 import { DemoTag } from "@/components/ui/DemoTag";
 import { Ledger, LedgerRow } from "@/components/ui/Ledger";
 import { NonprofitStatus } from "@/components/ui/NonprofitStatus";
-import { Notice } from "@/components/ui/Notice";
 import { formatCents } from "@/lib/formatters";
-import { distribute } from "@/lib/distribution";
-import { curatedOrganizations, getExpertFund, getFeaturedOrganizations, getMvpAnimalCharity } from "@/lib/seed/sources";
+import { curatedOrganizations, getExpertFund } from "@/lib/seed/sources";
 import type { CuratedOrganization, MvpCategory } from "@/lib/types";
-import { HERO_TRANSITION, HeroFrame, SourceLine, SplitBar, formatDay, type AreaTotal } from "./HeroFrame";
+import { HeroFrame } from "./HeroFrame";
+import {
+  AreaLabel,
+  AreaMark,
+  EstimateTag,
+  GroupedSplit,
+  InfoRow,
+  OptionRow,
+  SourceLine,
+  SplitBar,
+  SplitStrip,
+  StepIndicator,
+  Switch,
+  areaTotals
+} from "./HeroParts";
+import { AREAS, CURRENCY, formatDay, heroSplit, plannedForStartYear, recipientsFor, resolveGift, shortName } from "./heroData";
 import { sampleDonor } from "./sampleDonor";
 
 export type HeroScreenProps = { showConceptLabel?: boolean };
 
-export const AREAS: readonly MvpCategory[] = ["Global health", "Poverty relief", "Animal welfare"];
-export const CURRENCY = sampleDonor.currency;
+/* Copy on these frames is placeholder until it passes the two-vendor copy check (AGENTS.md §7). */
 
-/** Copy on these frames is placeholder until it passes the two-vendor copy check (AGENTS.md §7). */
-
-/** Recipients per area, straight from the seed loaders. */
-function recipientsFor(area: MvpCategory): CuratedOrganization[] {
-  if (area === "Animal welfare") {
-    const animal = getMvpAnimalCharity();
-    return animal ? [animal] : [];
-  }
-  return getFeaturedOrganizations().filter((org) => org.category === area);
-}
-
-export type HeroSplitLine = { organization: CuratedOrganization; cents: number };
-
-/** The app's own split rule (lib/distribution.ts) fed only with records from lib/seed/sources.ts. */
-export function heroSplit(areas: readonly MvpCategory[], amountCents: number, letExpertsDecide: boolean): HeroSplitLine[] {
+/** "Let experts decide", one treatment on every screen. Its wording is the seed record's own summary. */
+export function ExpertsOption({ selected, onToggle }: { selected: boolean; onToggle: (selected: boolean) => void }) {
   const expert = getExpertFund();
-  const animal = getMvpAnimalCharity();
-  if (!expert || !animal) return [];
-  const byId = new Map(curatedOrganizations.map((org) => [org.id, org]));
-
-  return distribute({
-    totalCents: amountCents,
-    areas,
-    featured: getFeaturedOrganizations(),
-    animalCharityId: animal.id,
-    expertFundId: expert.id,
-    letExpertsDecide
-  }).flatMap(({ organizationId, cents }) => {
-    const organization = byId.get(organizationId);
-    return organization ? [{ organization, cents }] : [];
-  });
+  if (!expert) return null;
+  return (
+    <OptionRow
+      title="Let experts decide"
+      description={`All of it goes to the ${expert.name}. ${expert.summary}`}
+      selected={selected}
+      onToggle={onToggle}
+    />
+  );
 }
 
-export function areaTotals(lines: readonly HeroSplitLine[]): AreaTotal[] {
-  return AREAS.map((area) => ({
-    area,
-    cents: lines.filter(({ organization }) => organization.category === area).reduce((sum, { cents }) => sum + cents, 0)
-  }));
+/** Seed figures can share one source; show each distinct source once instead of under every figure. */
+function distinctSources(figures: CuratedOrganization["figures"]) {
+  const seen = new Map<string, { name: string; url: string; asOf: string }>();
+  for (const f of figures) seen.set(`${f.source_url}|${f.as_of}`, { name: f.source_name, url: f.source_url, asOf: f.as_of });
+  return [...seen.values()];
 }
 
-/** Short display name: drops the programme suffix after the colon ("Helen Keller Intl: vitamin A…" → "Helen Keller Intl"). */
-export function shortName(org: CuratedOrganization) {
-  return org.name.split(":")[0];
-}
-
-/* ------------------------------------------------------------------ 1 · Choose causes */
+/* ------------------------------------------------------------------ Explore · choose causes */
 
 export function ChooseCausesScreen({ showConceptLabel = true }: HeroScreenProps) {
   const [picked, setPicked] = useState<readonly MvpCategory[]>(sampleDonor.areas);
-  const expert = getExpertFund();
+  const [experts, setExperts] = useState(false);
 
   const toggle = (area: MvpCategory, on: boolean) =>
     setPicked((current) => (on ? AREAS.filter((a) => a === area || current.includes(a)) : current.filter((a) => a !== area)));
 
   return (
-    <HeroFrame showConceptLabel={showConceptLabel}>
+    <HeroFrame
+      tab="explore"
+      showConceptLabel={showConceptLabel}
+      actionBar={
+        <Button block disabled={picked.length === 0 && !experts}>
+          Choose an amount
+        </Button>
+      }
+    >
+      <StepIndicator current="Explore" />
       <div className="flex flex-col gap-ds-sm">
-        <p className="font-ds-mono text-ds-mono text-ds-ink-2">Step 1 of 3</p>
         <h1 className="text-ds-h1">What would you like to support?</h1>
         <p className="text-ds-body text-ds-ink-2">Pick one or more. Your gift is split equally between them.</p>
       </div>
 
       <ul className="flex flex-col border-t border-ds-rule">
-        {AREAS.map((area) => {
-          const names = recipientsFor(area).map(shortName);
-          return (
-            <li key={area} className="flex flex-col gap-ds-sm border-b border-ds-rule py-ds-md">
-              <CauseChip label={area} selected={picked.includes(area)} onToggle={(on) => toggle(area, on)} />
-              <p className="text-ds-small text-ds-ink-2">{names.join(" · ")}</p>
-            </li>
-          );
-        })}
+        {AREAS.map((area) => (
+          <li key={area} className="flex flex-col gap-ds-sm border-b border-ds-rule py-ds-md">
+            <CauseChip label={area} selected={picked.includes(area)} onToggle={(on) => toggle(area, on)} />
+            <p className="flex items-start gap-ds-sm text-ds-small text-ds-ink-2">
+              <span className="mt-1">
+                <AreaMark area={area} size={12} />
+              </span>
+              {recipientsFor(area).map(shortName).join(" · ")}
+            </p>
+          </li>
+        ))}
       </ul>
 
-      {expert ? (
-        <section aria-labelledby="experts-heading" className="flex flex-col gap-ds-sm">
-          <h2 id="experts-heading" className="text-ds-row">
-            Or let experts decide
-          </h2>
-          <p className="text-ds-small text-ds-ink-2">
-            <span className="font-semibold text-ds-ink">{expert.name}.</span> {expert.summary}
-          </p>
-          <NonprofitStatus status="givewell" />
-        </section>
-      ) : null}
-
-      <div className="mt-auto">
-        <Button block disabled={picked.length === 0}>
-          Continue
-        </Button>
-      </div>
+      <ExpertsOption selected={experts} onToggle={setExperts} />
     </HeroFrame>
   );
 }
 
-/* ------------------------------------------------------------------ 2 · Your plan */
+/* ------------------------------------------------------------------ Plan · your plan */
 
 export function YourPlanScreen({ showConceptLabel = true }: HeroScreenProps) {
   const [experts, setExperts] = useState(false);
+  const splitId = useId();
   const lines = heroSplit(sampleDonor.areas, sampleDonor.monthlyCents, experts);
-  const totals = areaTotals(lines);
-  const total = lines.reduce((sum, { cents }) => sum + cents, 0);
 
   return (
-    <HeroFrame showConceptLabel={showConceptLabel}>
+    <HeroFrame
+      tab="plan"
+      showConceptLabel={showConceptLabel}
+      note="Simulated plan. No money moves."
+      actionBar={<Button block>Confirm plan</Button>}
+    >
+      <StepIndicator current="Plan" />
       <div className="flex flex-col gap-ds-lg">
-        <div className="flex flex-col gap-ds-sm">
-          <p className="text-ds-small text-ds-ink-2">{sampleDonor.displayName}</p>
-          <h1 className="text-ds-h1">Your plan</h1>
-        </div>
-        <Amount cents={sampleDonor.monthlyCents} currency={CURRENCY} caption="every month, simulated" />
+        <h1 className="text-ds-h1">Your plan</h1>
+        <Amount cents={sampleDonor.monthlyCents} currency={CURRENCY} caption="every month" />
       </div>
 
-      <section aria-labelledby="split-heading" className="flex flex-col gap-ds-md">
+      <ExpertsOption selected={experts} onToggle={setExperts} />
+
+      <section aria-labelledby={splitId} className="flex flex-col gap-ds-md">
         <div className="flex items-baseline justify-between gap-ds-sm">
-          <h2 id="split-heading" className="text-ds-row">
+          <h2 id={splitId} className="text-ds-row">
             How it splits
           </h2>
           <DemoTag>Illustrative split</DemoTag>
         </div>
-        <SplitBar totals={totals} currency={CURRENCY} />
-        <Ledger>
-          {lines.map(({ organization, cents }) => (
-            <LedgerRow
-              key={organization.id}
-              label={shortName(organization)}
-              detail={organization.category}
-              value={formatCents(cents, CURRENCY)}
-            />
-          ))}
-          <LedgerRow label="Total" value={formatCents(total, CURRENCY)} emphasis />
-        </Ledger>
-        <div className="flex flex-col gap-ds-xs">
-          <CauseChip label="Let experts decide" selected={experts} onToggle={setExperts} />
-          <p className={clsx("text-ds-small text-ds-ink-2 transition-opacity", HERO_TRANSITION, experts ? "opacity-100" : "opacity-0")} aria-hidden={!experts}>
-            All of it goes to the GiveWell Top Charities Fund.
-          </p>
-        </div>
+        <SplitBar totals={areaTotals(lines)} />
+        <GroupedSplit lines={lines} />
       </section>
-
-      <div className="mt-auto flex flex-col gap-ds-md">
-        <Notice>Simulated plan. No money moves.</Notice>
-        <Button block>Confirm plan</Button>
-      </div>
     </HeroFrame>
   );
 }
 
-/* ------------------------------------------------------------------ 3 · Charity evidence */
+/* ------------------------------------------------------------------ Explore · charity detail */
 
 export const EVIDENCE_CHARITY_ID = "against-malaria-foundation";
 
 export function CharityEvidenceScreen({ showConceptLabel = true }: HeroScreenProps) {
+  const figuresId = useId();
   const org = curatedOrganizations.find((record) => record.id === EVIDENCE_CHARITY_ID);
   if (!org) return null;
+  const [lead, ...rest] = org.figures;
 
   return (
-    <HeroFrame showConceptLabel={showConceptLabel}>
-      <div className="flex flex-col gap-ds-sm">
-        <p className="font-ds-mono text-ds-mono text-ds-ink-2">{org.category}</p>
+    <HeroFrame
+      tab="explore"
+      showConceptLabel={showConceptLabel}
+      note="These are estimates for the charity's work overall. Altrue doesn't apply them to your amount."
+      actionBar={<Button block>Add to my plan</Button>}
+    >
+      <div className="-mt-ds-sm flex flex-col gap-ds-sm">
+        <a
+          href="#explore"
+          aria-label="Back to Explore"
+          className="-ml-2 inline-flex min-h-ds-touch w-fit items-center gap-ds-xs pr-ds-sm text-ds-body text-ds-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ds-focus"
+        >
+          <ChevronLeft aria-hidden size={20} />
+          Explore
+        </a>
         <h1 className="text-ds-h1">{org.name}</h1>
-        <NonprofitStatus status="givewell" />
-        <p className="mt-ds-xs text-ds-body">{org.summary}</p>
+        <p className="text-ds-body">{org.summary}</p>
       </div>
 
-      <section aria-labelledby="figures-heading" className="flex flex-col gap-ds-md">
-        <h2 id="figures-heading" className="text-ds-row">
+      <Ledger>
+        <InfoRow label="Area">
+          <AreaLabel area={org.category} as="span" />
+        </InfoRow>
+        <InfoRow label="Evaluator">
+          <NonprofitStatus status="givewell" />
+        </InfoRow>
+        <InfoRow label="Evidence">{org.evidence}</InfoRow>
+      </Ledger>
+
+      <section aria-labelledby={figuresId} className="flex flex-col gap-ds-md">
+        <h2 id={figuresId} className="text-ds-row">
           What GiveWell estimates
         </h2>
-        <ul className="flex flex-col border-t border-ds-rule">
-          {org.figures.map((figure) => (
-            <li key={figure.label} className="flex flex-col gap-ds-xs border-b border-ds-rule py-ds-md">
-              <DemoTag>{figure.figureLabel}</DemoTag>
-              <p className="text-ds-amount-md tabular-nums">{figure.value}</p>
-              <p className="text-ds-body">{figure.label}</p>
-              <SourceLine name={figure.source_name} url={figure.source_url} asOf={figure.as_of} />
-            </li>
-          ))}
-        </ul>
-        <p className="text-ds-small text-ds-ink-2">
-          These are estimates for the charity&apos;s work overall. Altrue doesn&apos;t apply them to your amount.
-        </p>
+        {lead ? (
+          <div className="flex flex-col gap-ds-xs">
+            <EstimateTag>{lead.figureLabel}</EstimateTag>
+            <p className="text-ds-amount-md tabular-nums">{lead.value}</p>
+            <p className="text-ds-body">{lead.label}</p>
+          </div>
+        ) : null}
+        {rest.length > 0 ? (
+          <ul className="flex flex-col border-t border-ds-rule">
+            {rest.map((figure) => (
+              <li key={figure.label} className="flex flex-col gap-ds-xs border-b border-ds-rule py-ds-md">
+                <EstimateTag>{figure.figureLabel}</EstimateTag>
+                <p className="text-ds-h1 tabular-nums">{figure.value}</p>
+                <p className="text-ds-small text-ds-ink-2">{figure.label}</p>
+              </li>
+            ))}
+          </ul>
+        ) : null}
+        {distinctSources(org.figures).map((source) => (
+          <SourceLine key={source.url + source.asOf} {...source} />
+        ))}
       </section>
-
-      <section aria-labelledby="evidence-heading" className="flex flex-col gap-ds-xs">
-        <h2 id="evidence-heading" className="text-ds-row">
-          Evidence
-        </h2>
-        <p className="text-ds-small text-ds-ink-2">{org.evidence}</p>
-      </section>
-
-      <div className="mt-auto">
-        <Button block>Add to my plan</Button>
-      </div>
     </HeroFrame>
   );
 }
 
-/* ------------------------------------------------------------------ 4 · Giving history */
+/* ------------------------------------------------------------------ Profile */
 
-/** "6 charities", or the one recipient's name when the gift went to a single place (the experts fund). */
-function giftDetail(lines: readonly { organizationId: string }[]) {
-  if (lines.length === 1) {
-    const org = curatedOrganizations.find((record) => record.id === lines[0].organizationId);
-    return org ? `All to ${shortName(org)}` : "1 charity";
-  }
-  return `Split across ${lines.length} charities`;
+/** The first figure GiveWell itself gives for each charity in the plan. Self-reported figures are left out of this block. */
+function evaluatorFigures() {
+  const orgs = sampleDonor.areas.flatMap(recipientsFor);
+  const withFigure = orgs.flatMap((org) => {
+    const figure = org.figures.find((f) => f.basis.startsWith("GiveWell"));
+    return figure ? [{ org, figure }] : [];
+  });
+  const without = orgs.filter((org) => !withFigure.some((row) => row.org.id === org.id));
+  return { withFigure, without };
 }
 
-export function GivingHistoryScreen({ showConceptLabel = true }: HeroScreenProps) {
-  const total = sampleDonor.history.reduce((sum, { cents }) => sum + cents, 0);
+export function ProfileScreen({ showConceptLabel = true }: HeroScreenProps) {
+  const [paused, setPaused] = useState(false);
+  const [prefs, setPrefs] = useState<{ monthlySummary: boolean; productUpdates: boolean }>(sampleDonor.notifications);
+  const planId = useId();
+  const progressId = useId();
+  const historyId = useId();
+  const estimatesId = useId();
+  const notificationsId = useId();
+
+  const given = sampleDonor.history.reduce((sum, { cents }) => sum + cents, 0);
+  const planned = plannedForStartYear();
+  const { withFigure, without } = evaluatorFigures();
+  const sources = distinctSources(withFigure.map(({ figure }) => figure));
 
   return (
-    <HeroFrame showConceptLabel={showConceptLabel}>
-      <div className="flex flex-col gap-ds-sm">
-        <p className="text-ds-small text-ds-ink-2">
-          {sampleDonor.displayName} · since {formatDay(sampleDonor.planStartedOn)}
-        </p>
-        <h1 className="text-ds-h1">Your giving</h1>
+    <HeroFrame tab="profile" showConceptLabel={showConceptLabel} note="Simulated gifts. No money moved.">
+      <div className="flex flex-col gap-ds-xs">
+        <h1 className="text-ds-h1">{sampleDonor.displayName}</h1>
+        <p className="text-ds-small text-ds-ink-2">Giving since {formatDay(sampleDonor.planStartedOn)}</p>
       </div>
 
-      <Amount cents={total} currency={CURRENCY} size="compact" caption={`${sampleDonor.history.length} simulated monthly gifts`} />
-
-      <section aria-labelledby="history-heading" className="flex flex-col gap-ds-md">
-        <div className="flex items-baseline justify-between gap-ds-sm">
-          <h2 id="history-heading" className="text-ds-row">
-            History
-          </h2>
-          <DemoTag>Simulated</DemoTag>
+      <section aria-labelledby={planId} className="flex flex-col gap-ds-md">
+        <h2 id={planId} className="text-ds-row">
+          Active plan
+        </h2>
+        <div className="flex flex-col gap-ds-sm border-y border-ds-rule py-ds-md">
+          <p className="text-ds-row tabular-nums">{formatCents(sampleDonor.monthlyCents, CURRENCY)} every month</p>
+          <p className="flex flex-wrap gap-x-ds-md gap-y-ds-xs text-ds-small text-ds-ink-2">
+            {sampleDonor.areas.map((area) => (
+              <span key={area} className="inline-flex items-center gap-ds-xs">
+                <AreaMark area={area} size={12} />
+                {area}
+              </span>
+            ))}
+          </p>
+          <p className="text-ds-small text-ds-ink-2">
+            {paused
+              ? "Paused. No gifts until you resume."
+              : `Next gift ${formatDay(sampleDonor.nextGiftDate)} · ${sampleDonor.paymentMethod}`}
+          </p>
         </div>
+        <div className="grid grid-cols-2 gap-ds-sm">
+          <Button variant="secondary">Change plan</Button>
+          <Button variant="secondary" onClick={() => setPaused((p) => !p)}>
+            {paused ? "Resume plan" : "Pause plan"}
+          </Button>
+        </div>
+      </section>
+
+      <section aria-labelledby={progressId} className="flex flex-col gap-ds-sm">
+        <h2 id={progressId} className="text-ds-row">
+          {planned.year} so far
+        </h2>
+        <p className="text-ds-body tabular-nums">
+          {formatCents(given, CURRENCY)}{" "}
+          <span className="text-ds-ink-2">of {formatCents(planned.cents, CURRENCY)} planned</span>
+        </p>
+        <div
+          role="progressbar"
+          aria-labelledby={progressId}
+          aria-valuemin={0}
+          aria-valuemax={planned.cents}
+          aria-valuenow={given}
+          aria-valuetext={`${formatCents(given, CURRENCY)} of ${formatCents(planned.cents, CURRENCY)}`}
+          className="h-2 w-full overflow-hidden rounded-full bg-ds-rule"
+        >
+          <div className="h-full bg-ds-accent" style={{ width: `${Math.min(100, (given / planned.cents) * 100)}%` }} />
+        </div>
+      </section>
+
+      <section aria-labelledby={historyId} className="flex flex-col gap-ds-sm">
+        <h2 id={historyId} className="text-ds-row">
+          History
+        </h2>
         <Ledger>
           {sampleDonor.history.map(({ date, cents, lines }) => (
             <LedgerRow
               key={date}
               label={formatDay(date)}
-              detail={giftDetail(lines)}
+              detail={<SplitStrip lines={resolveGift(lines)} />}
               value={formatCents(cents, CURRENCY)}
             />
           ))}
-          <LedgerRow label="Total" value={formatCents(total, CURRENCY)} emphasis />
         </Ledger>
       </section>
 
-      <Notice className="mt-auto">
-        No money moved. Altrue doesn&apos;t estimate what your own gifts achieved; it shows each charity&apos;s sourced
-        estimates instead.
-      </Notice>
+      <section aria-labelledby={estimatesId} className="flex flex-col gap-ds-sm">
+        <h2 id={estimatesId} className="text-ds-row">
+          What evaluators estimate
+        </h2>
+        <p className="text-ds-small text-ds-ink-2">For each charity&apos;s work overall, not for your gifts.</p>
+        <ul className="flex flex-col border-t border-ds-rule">
+          {withFigure.map(({ org, figure }) => (
+            <li key={org.id} className="flex flex-col gap-ds-xs border-b border-ds-rule py-ds-sm">
+              <div className="flex items-baseline justify-between gap-ds-md">
+                <span className="text-ds-row">{shortName(org)}</span>
+                <span className="shrink-0 text-ds-row tabular-nums">{figure.value}</span>
+              </div>
+              <div className="flex items-baseline justify-between gap-ds-md">
+                <span className="text-ds-small text-ds-ink-2">{figure.label}</span>
+                <EstimateTag>{figure.figureLabel}</EstimateTag>
+              </div>
+            </li>
+          ))}
+        </ul>
+        {sources.map((source) => (
+          <SourceLine key={source.url + source.asOf} {...source} />
+        ))}
+        {without.length > 0 ? (
+          <p className="text-ds-small text-ds-ink-2">
+            No evaluator figure in the source packet yet for {without.map(shortName).join(" or ")}.
+          </p>
+        ) : null}
+      </section>
+
+      <section aria-labelledby={notificationsId} className="flex flex-col gap-ds-xs">
+        <h2 id={notificationsId} className="text-ds-row">
+          Notifications
+        </h2>
+        <div className="flex flex-col border-t border-ds-rule">
+          <Switch
+            label="Monthly summary"
+            checked={prefs.monthlySummary}
+            onChange={(v) => setPrefs((p) => ({ ...p, monthlySummary: v }))}
+          />
+          <Switch
+            label="Product updates"
+            checked={prefs.productUpdates}
+            onChange={(v) => setPrefs((p) => ({ ...p, productUpdates: v }))}
+          />
+        </div>
+      </section>
     </HeroFrame>
   );
 }

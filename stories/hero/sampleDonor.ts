@@ -27,6 +27,8 @@ export const sampleDonor = {
   planStartedOn: "2026-09-01",
   paymentMethod: "Card ending 4242",
   nextGiftDate: "2026-12-01",
+  /** Shown on Profile as plain on/off settings. Nothing is sent. */
+  notifications: { monthlySummary: true, productUpdates: false },
   /** Simulated monthly gifts, newest first. October shows the "let experts decide" option. No money moved. */
   history: [
     { date: "2026-11-01", cents: 1200, lines: SPLIT_LINES },
