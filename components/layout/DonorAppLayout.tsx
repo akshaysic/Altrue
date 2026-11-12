@@ -3,9 +3,9 @@ import { DonorNav } from "@/components/layout/DonorNav";
 
 export function DonorAppLayout({ children }: { children: ReactNode }) {
   return (
-    <div className="min-h-screen bg-paper text-ink md:flex">
+    <div className="min-h-screen bg-ds-ground font-ds text-ds-ink md:flex">
       <DonorNav />
-      <main className="w-full px-5 py-8 md:px-8">{children}</main>
+      <main className="min-w-0 flex-1 px-ds-md py-ds-lg md:px-ds-xl md:py-ds-xl">{children}</main>
     </div>
   );
 }

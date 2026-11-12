@@ -15,6 +15,6 @@ export const Default: Story = {
   play: async ({ canvas }) => {
     const nav = canvas.getByRole('navigation');
     const hrefs = Array.from(nav.querySelectorAll('a')).map((link) => link.getAttribute('href'));
-    await expect(hrefs).toEqual(['/dashboard', '/causes', '/plan/new', '/impact', '/donations', '/settings']);
+    await expect(hrefs).toEqual(['/dashboard', '/causes', '/plan/new', '/impact', '/donations', '/settings', '/feedback']);
   },
 };
