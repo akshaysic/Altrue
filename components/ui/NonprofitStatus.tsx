@@ -1,15 +1,17 @@
-import { BadgeCheck, CircleAlert, Clock } from "lucide-react";
+import { Clock, ClipboardList } from "lucide-react";
 import clsx from "clsx";
-import type { VerificationStatus } from "@/lib/types";
+
+/** Who has looked at the organization. Altrue does not verify charities itself; it points to the evaluator. */
+export type EvaluatorStatus = "givewell" | "ace" | "post-mvp";
 
 const STATUS = {
-  verified: { label: "Verified", Icon: BadgeCheck, iconClass: "text-ds-accent" },
-  pending_review: { label: "Pending review", Icon: Clock, iconClass: "text-ds-ink-2" },
-  data_incomplete: { label: "Data incomplete", Icon: CircleAlert, iconClass: "text-ds-notice-ink" }
-} satisfies Record<VerificationStatus, { label: string; Icon: typeof BadgeCheck; iconClass: string }>;
+  givewell: { label: "Evaluated by GiveWell", Icon: ClipboardList, iconClass: "text-ds-accent" },
+  ace: { label: "Evaluated by Animal Charity Evaluators", Icon: ClipboardList, iconClass: "text-ds-accent" },
+  "post-mvp": { label: "Post-MVP", Icon: Clock, iconClass: "text-ds-ink-2" }
+} satisfies Record<EvaluatorStatus, { label: string; Icon: typeof Clock; iconClass: string }>;
 
-/** A nonprofit's verification status, shown next to the recipient (proposed addition from the Google Pay reference). */
-export function NonprofitStatus({ status }: { status: VerificationStatus }) {
+/** An evaluator tag shown next to a recipient. It names the third party; it never says Altrue verified anything. */
+export function NonprofitStatus({ status }: { status: EvaluatorStatus }) {
   const { label, Icon, iconClass } = STATUS[status];
 
   return (

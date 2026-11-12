@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { expect, fn } from 'storybook/test';
-import { causes } from '@/lib/seed';
 import { CauseChip } from './CauseChip';
+import { AREAS } from './storyData';
 
 const meta = {
   component: CauseChip,
   tags: ['autodocs', 'ai-generated'],
-  args: { label: 'Global Health', onToggle: fn() },
+  args: { label: 'Global health', onToggle: fn() },
 } satisfies Meta<typeof CauseChip>;
 
 export default meta;
@@ -15,7 +15,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Unselected: Story = {
   play: async ({ canvas, userEvent, args }) => {
-    const chip = canvas.getByRole('button', { name: 'Global Health' });
+    const chip = canvas.getByRole('button', { name: 'Global health' });
     await expect(chip).toHaveAttribute('aria-pressed', 'false');
     await userEvent.click(chip);
     await expect(args.onToggle).toHaveBeenCalledWith(true);
@@ -25,7 +25,7 @@ export const Unselected: Story = {
 export const Selected: Story = {
   args: { selected: true },
   play: async ({ canvas, userEvent, args }) => {
-    const chip = canvas.getByRole('button', { name: 'Global Health' });
+    const chip = canvas.getByRole('button', { name: 'Global health' });
     await expect(chip).toHaveAttribute('aria-pressed', 'true');
     await userEvent.click(chip);
     await expect(args.onToggle).toHaveBeenCalledWith(false);
@@ -35,7 +35,7 @@ export const Selected: Story = {
 export const Disabled: Story = {
   args: { disabled: true },
   play: async ({ canvas, userEvent, args }) => {
-    const chip = canvas.getByRole('button', { name: 'Global Health' });
+    const chip = canvas.getByRole('button', { name: 'Global health' });
     await expect(chip).toBeDisabled();
     await expect(chip).toHaveAttribute('aria-pressed', 'false');
     await userEvent.click(chip);
@@ -46,10 +46,10 @@ export const Disabled: Story = {
 export const DisabledSelected: Story = {
   args: { selected: true, disabled: true },
   play: async ({ canvas, userEvent, args }) => {
-    const chip = canvas.getByRole('button', { name: 'Global Health' });
+    const chip = canvas.getByRole('button', { name: 'Global health' });
     await expect(chip).toBeDisabled();
     await expect(chip).toHaveAttribute('aria-pressed', 'true');
-    await expect(chip).toHaveAccessibleName('Global Health');
+    await expect(chip).toHaveAccessibleName('Global health');
     await userEvent.click(chip);
     await expect(args.onToggle).not.toHaveBeenCalled();
   },
@@ -64,7 +64,7 @@ export const KeyboardFocus: Story = {
     }} />;
   },
   play: async ({ canvas, userEvent, args }) => {
-    const chip = canvas.getByRole('button', { name: 'Global Health' });
+    const chip = canvas.getByRole('button', { name: 'Global health' });
     await userEvent.tab();
     await expect(chip).toHaveFocus();
     await expect(chip.matches(':focus-visible')).toBe(true);
@@ -84,7 +84,7 @@ export const NarrowContainer: Story = {
   args: { selected: true },
   decorators: [(Story) => <div className="w-32"><Story /></div>],
   play: async ({ canvas }) => {
-    const chip = canvas.getByRole('button', { name: 'Global Health' });
+    const chip = canvas.getByRole('button', { name: 'Global health' });
     await expect(chip.getBoundingClientRect().width).toBeLessThanOrEqual(128);
     await expect(chip.getBoundingClientRect().height).toBeGreaterThanOrEqual(48);
     await expect(chip.scrollWidth).toBeLessThanOrEqual(chip.clientWidth);
@@ -102,29 +102,29 @@ export const StateGallery: Story = {
   ),
 };
 
-/** All seeded causes, as on the "Pick causes" screen. */
+/** The three MVP areas, as on the "Pick causes" screen. */
 export const Picker: Story = {
   render: function Render() {
-    const [picked, setPicked] = useState<string[]>(['global-health']);
+    const [picked, setPicked] = useState<string[]>([AREAS[0]]);
 
     return (
       <div className="flex max-w-[390px] flex-wrap gap-2">
-        {causes.map((cause) => (
+        {AREAS.map((area) => (
           <CauseChip
-            key={cause.id}
-            label={cause.name}
-            selected={picked.includes(cause.id)}
-            onToggle={(on) => setPicked((current) => (on ? [...current, cause.id] : current.filter((id) => id !== cause.id)))}
+            key={area}
+            label={area}
+            selected={picked.includes(area)}
+            onToggle={(on) => setPicked((current) => (on ? [...current, area] : current.filter((entry) => entry !== area)))}
           />
         ))}
       </div>
     );
   },
   play: async ({ canvas, userEvent }) => {
-    const second = canvas.getByRole('button', { name: causes[1].name });
+    const second = canvas.getByRole('button', { name: AREAS[1] });
     await userEvent.click(second);
     await expect(second).toHaveAttribute('aria-pressed', 'true');
-    await userEvent.click(canvas.getByRole('button', { name: causes[0].name }));
-    await expect(canvas.getByRole('button', { name: causes[0].name })).toHaveAttribute('aria-pressed', 'false');
+    await userEvent.click(canvas.getByRole('button', { name: AREAS[0] }));
+    await expect(canvas.getByRole('button', { name: AREAS[0] })).toHaveAttribute('aria-pressed', 'false');
   },
 };

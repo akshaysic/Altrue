@@ -1,62 +1,66 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { expect } from 'storybook/test';
-import { MOCKED_FEE_CENTS } from '@/lib/constants';
 import { formatCents } from '@/lib/formatters';
-import { causes, demoAllocations, demoPlans, nonprofits } from '@/lib/seed';
+import { buildSplit } from '@/lib/mvpSplit';
 import { Amount } from '../Amount';
 import { Button } from '../Button';
 import { DemoTag } from '../DemoTag';
 import { Ledger, LedgerRow } from '../Ledger';
-import { NonprofitStatus } from '../NonprofitStatus';
+import { NonprofitStatus, type EvaluatorStatus } from '../NonprofitStatus';
 import { Notice } from '../Notice';
+import { AREAS } from '../storyData';
+
+const PLAN_CENTS = 1000;
+
+/** Evaluator tags come from the source packet's evaluator field. GiveDirectly gets none: GiveWell no longer lists it. */
+const EVALUATOR_TAG: Record<string, EvaluatorStatus> = {
+  'malaria-consortium': 'givewell',
+  'against-malaria-foundation': 'givewell',
+  'helen-keller-intl': 'givewell',
+  'new-incentives': 'givewell',
+  'givewell-top-charities-fund': 'givewell',
+  'the-humane-league': 'ace',
+};
 
 /**
- * The design-system pieces put together as the "Check your plan" screen, using the seeded demo plan.
- * Copy here is placeholder: real screen copy goes through the copy check before it ships.
+ * The design-system pieces put together as the "Check your plan" screen: $10 split across the three MVP areas
+ * with the real MVP charities. Copy here is placeholder: real screen copy goes through the copy check before it ships.
  */
 function CheckYourPlan() {
-  const plan = demoPlans[0];
-  const toCauses = plan.monthlyAmountCents - MOCKED_FEE_CENTS;
+  const split = buildSplit({ areas: AREAS, amountCents: PLAN_CENTS, letExpertsDecide: false });
+  const total = split.reduce((sum, line) => sum + line.cents, 0);
 
   return (
     <div className="mx-auto flex min-h-screen max-w-[390px] flex-col gap-8 bg-ds-ground px-4 py-8 font-ds text-ds-ink">
       <div className="flex flex-col gap-6">
         <h1 className="text-ds-h1">Check your plan</h1>
-        <Amount cents={plan.monthlyAmountCents} caption="every month" />
+        <Amount cents={PLAN_CENTS} caption="every month" />
       </div>
-
-      <Ledger>
-        <LedgerRow label="You give" value={formatCents(plan.monthlyAmountCents)} />
-        <LedgerRow label="Platform fee" value={formatCents(MOCKED_FEE_CENTS)} detail="Mocked in this demo" />
-        <LedgerRow label="Goes to causes" value={formatCents(toCauses)} emphasis />
-      </Ledger>
 
       <section className="flex flex-col gap-3" aria-labelledby="split-heading">
         <div className="flex items-baseline justify-between">
           <h2 id="split-heading" className="text-ds-row">Your split</h2>
-          <DemoTag>Placeholder nonprofits</DemoTag>
+          <DemoTag>Illustrative split</DemoTag>
         </div>
         <Ledger>
-          {demoAllocations.map((allocation) => {
-            const cause = causes.find((entry) => entry.id === allocation.causeId);
-            const nonprofit = nonprofits.find((entry) => entry.id === allocation.nonprofitId);
+          {split.map(({ organization, cents }) => {
+            const tag = EVALUATOR_TAG[organization.id];
 
             return (
               <LedgerRow
-                key={allocation.id}
-                label={cause?.name ?? allocation.causeId}
-                value={formatCents(allocation.amountCents)}
+                key={organization.id}
+                label={organization.name}
+                value={formatCents(cents)}
                 detail={
-                  nonprofit ? (
-                    <span className="flex flex-col gap-1">
-                      <span>{nonprofit.name}</span>
-                      <NonprofitStatus status={nonprofit.verificationStatus} />
-                    </span>
-                  ) : undefined
+                  <span className="flex flex-col gap-1">
+                    <span>{organization.category}</span>
+                    {tag ? <NonprofitStatus status={tag} /> : null}
+                  </span>
                 }
               />
             );
           })}
+          <LedgerRow label="Total" value={formatCents(total)} emphasis />
         </Ledger>
       </section>
 
@@ -83,9 +87,9 @@ type Story = StoryObj<typeof meta>;
 
 export const Mobile390: Story = {
   play: async ({ canvas }) => {
-    // What goes to causes must equal the sum of the split shown underneath.
-    const splitTotal = demoAllocations.reduce((sum, allocation) => sum + allocation.amountCents, 0);
-    const totalRow = canvas.getByText('Goes to causes').closest('div')!;
-    await expect(totalRow).toHaveTextContent(formatCents(splitTotal));
+    // The rows must add up to what the donor gives.
+    const totalRow = canvas.getByText('Total').closest('div')!;
+    await expect(totalRow).toHaveTextContent(formatCents(PLAN_CENTS));
+    for (const area of AREAS) await expect(canvas.getAllByText(area).length).toBeGreaterThan(0);
   },
 };

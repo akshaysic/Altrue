@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { expect, fn } from 'storybook/test';
-import { causes, demoAllocations } from '@/lib/seed';
 import { formatCents } from '@/lib/formatters';
 import { AmountStepper } from './AmountStepper';
+import { AREAS } from './storyData';
 
 const meta = {
   component: AmountStepper,
   tags: ['autodocs', 'ai-generated'],
-  args: { label: 'Global Health', cents: 400, onChange: fn() },
+  args: { label: 'Global health', cents: 400, onChange: fn() },
   decorators: [
     (Story) => (
       <div className="max-w-[390px]">
@@ -23,7 +23,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   play: async ({ canvas, userEvent, args }) => {
-    await userEvent.click(canvas.getByRole('button', { name: 'Give more to Global Health' }));
+    await userEvent.click(canvas.getByRole('button', { name: 'Give more to Global health' }));
     await expect(args.onChange).toHaveBeenCalledWith(500);
   },
 };
@@ -31,31 +31,31 @@ export const Default: Story = {
 export const AtMinimum: Story = {
   args: { cents: 0 },
   play: async ({ canvas }) => {
-    await expect(canvas.getByRole('button', { name: 'Give less to Global Health' })).toBeDisabled();
+    await expect(canvas.getByRole('button', { name: 'Give less to Global health' })).toBeDisabled();
   },
 };
 
-/** The demo plan's split ($10 a month), adjustable per cause. Split option A from the canvas. */
+/** A $10 a month split across the three MVP areas, adjustable per area. Split option A from the canvas. */
 export const Split: Story = {
   render: function Render() {
-    const [amounts, setAmounts] = useState(() => Object.fromEntries(demoAllocations.map((a) => [a.causeId, a.amountCents])));
+    const [amounts, setAmounts] = useState<Record<string, number>>({ [AREAS[0]]: 400, [AREAS[1]]: 300, [AREAS[2]]: 300 });
 
     return (
       <div className="border-t border-ds-rule">
-        {demoAllocations.map((allocation) => (
+        {AREAS.map((area) => (
           <AmountStepper
-            key={allocation.id}
-            label={causes.find((cause) => cause.id === allocation.causeId)?.name ?? allocation.causeId}
-            cents={amounts[allocation.causeId]}
-            onChange={(cents) => setAmounts((current) => ({ ...current, [allocation.causeId]: cents }))}
+            key={area}
+            label={area}
+            cents={amounts[area]}
+            onChange={(cents) => setAmounts((current) => ({ ...current, [area]: cents }))}
           />
         ))}
       </div>
     );
   },
   play: async ({ canvas, userEvent }) => {
-    const row = canvas.getByRole('group', { name: 'Global Health' });
-    await userEvent.click(canvas.getByRole('button', { name: 'Give more to Global Health' }));
-    await expect(row.querySelector('output')).toHaveTextContent(formatCents(demoAllocations[0].amountCents + 100));
+    const row = canvas.getByRole('group', { name: 'Global health' });
+    await userEvent.click(canvas.getByRole('button', { name: 'Give more to Global health' }));
+    await expect(row.querySelector('output')).toHaveTextContent(formatCents(500));
   },
 };

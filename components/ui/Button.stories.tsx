@@ -32,6 +32,9 @@ export const Disabled: Story = {
   play: async ({ canvas, userEvent, args }) => {
     const button = canvas.getByRole('button', { name: 'Set up my plan' });
     await expect(button).toBeDisabled();
+    // Keeps its accent fill, at reduced strength.
+    await expect(getComputedStyle(button).backgroundColor).not.toBe('rgba(0, 0, 0, 0)');
+    await expect(Number(getComputedStyle(button).opacity)).toBeLessThan(1);
     await userEvent.click(button);
     await expect(args.onClick).not.toHaveBeenCalled();
   },
@@ -44,6 +47,8 @@ export const Loading: Story = {
     await expect(button).toBeDisabled();
     await expect(button).toHaveAttribute('aria-busy', 'true');
     await expect(button).toHaveAccessibleName('Set up my plan');
+    // Full colour, unlike disabled.
+    await expect(Number(getComputedStyle(button).opacity)).toBe(1);
     await userEvent.click(button);
     await expect(args.onClick).not.toHaveBeenCalled();
   },
