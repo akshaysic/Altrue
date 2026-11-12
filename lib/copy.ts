@@ -40,5 +40,11 @@ export const PLACEHOLDER_COPY = {
     asOfLabel: "As of",
     retrievedLabel: "Retrieved",
     externalHint: "opens in a new tab"
+  },
+
+  // Stub page only; the real local feedback form is T-35. No external form URL on purpose.
+  feedback: {
+    title: "Feedback",
+    body: "The feedback form is not built yet. For now, tell the person who sent you this prototype."
   }
 } as const;

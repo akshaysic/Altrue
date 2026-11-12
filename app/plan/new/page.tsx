@@ -1,14 +1,7 @@
-import { DecisionLayout } from "@/components/layout/DecisionLayout";
-import { PlaceholderCard } from "@/components/PlaceholderCard";
-import { demoDonorProfile } from "@/lib/seed";
+import { redirect } from "next/navigation";
 
-export default function NewPlanPage() {
-  return (
-    <DecisionLayout eyebrow="Donation plan" title="Build a monthly plan" description="This route will become the plan builder. For now it shows the demo donor profile inputs.">
-      <PlaceholderCard title="Demo plan inputs">
-        <p>Selected causes: {demoDonorProfile.selectedCauseIds.join(", ")}</p>
-        <p className="mt-2">Priority style: {demoDonorProfile.priorityStyle}</p>
-      </PlaceholderCard>
-    </DecisionLayout>
-  );
+// Retired for the prototype: this scaffold screen showed the old demo causes, unsourced demo metrics or placeholder text.
+// The data files stay; later cards rebuild these routes on sourced data.
+export default function RetiredPage() {
+  redirect("/causes");
 }
