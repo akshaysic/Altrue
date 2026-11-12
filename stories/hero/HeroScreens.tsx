@@ -18,8 +18,8 @@ import { sampleDonor } from "./sampleDonor";
 
 export type HeroScreenProps = { showConceptLabel?: boolean };
 
-const AREAS: readonly MvpCategory[] = ["Global health", "Poverty relief", "Animal welfare"];
-const CURRENCY = sampleDonor.currency;
+export const AREAS: readonly MvpCategory[] = ["Global health", "Poverty relief", "Animal welfare"];
+export const CURRENCY = sampleDonor.currency;
 
 /** Copy on these frames is placeholder until it passes the two-vendor copy check (AGENTS.md §7). */
 
@@ -32,7 +32,7 @@ function recipientsFor(area: MvpCategory): CuratedOrganization[] {
   return getFeaturedOrganizations().filter((org) => org.category === area);
 }
 
-type HeroSplitLine = { organization: CuratedOrganization; cents: number };
+export type HeroSplitLine = { organization: CuratedOrganization; cents: number };
 
 /** The app's own split rule (lib/distribution.ts) fed only with records from lib/seed/sources.ts. */
 export function heroSplit(areas: readonly MvpCategory[], amountCents: number, letExpertsDecide: boolean): HeroSplitLine[] {
@@ -54,7 +54,7 @@ export function heroSplit(areas: readonly MvpCategory[], amountCents: number, le
   });
 }
 
-function areaTotals(lines: readonly HeroSplitLine[]): AreaTotal[] {
+export function areaTotals(lines: readonly HeroSplitLine[]): AreaTotal[] {
   return AREAS.map((area) => ({
     area,
     cents: lines.filter(({ organization }) => organization.category === area).reduce((sum, { cents }) => sum + cents, 0)
@@ -62,7 +62,7 @@ function areaTotals(lines: readonly HeroSplitLine[]): AreaTotal[] {
 }
 
 /** Short display name: drops the programme suffix after the colon ("Helen Keller Intl: vitamin A…" → "Helen Keller Intl"). */
-function shortName(org: CuratedOrganization) {
+export function shortName(org: CuratedOrganization) {
   return org.name.split(":")[0];
 }
 
@@ -221,9 +221,17 @@ export function CharityEvidenceScreen({ showConceptLabel = true }: HeroScreenPro
 
 /* ------------------------------------------------------------------ 4 · Giving history */
 
+/** "6 charities", or the one recipient's name when the gift went to a single place (the experts fund). */
+function giftDetail(lines: readonly { organizationId: string }[]) {
+  if (lines.length === 1) {
+    const org = curatedOrganizations.find((record) => record.id === lines[0].organizationId);
+    return org ? `All to ${shortName(org)}` : "1 charity";
+  }
+  return `Split across ${lines.length} charities`;
+}
+
 export function GivingHistoryScreen({ showConceptLabel = true }: HeroScreenProps) {
   const total = sampleDonor.history.reduce((sum, { cents }) => sum + cents, 0);
-  const areaCount = sampleDonor.areas.length;
 
   return (
     <HeroFrame showConceptLabel={showConceptLabel}>
@@ -244,11 +252,11 @@ export function GivingHistoryScreen({ showConceptLabel = true }: HeroScreenProps
           <DemoTag>Simulated</DemoTag>
         </div>
         <Ledger>
-          {sampleDonor.history.map(({ date, cents }) => (
+          {sampleDonor.history.map(({ date, cents, lines }) => (
             <LedgerRow
               key={date}
               label={formatDay(date)}
-              detail={`Split across ${areaCount} causes`}
+              detail={giftDetail(lines)}
               value={formatCents(cents, CURRENCY)}
             />
           ))}
