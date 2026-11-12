@@ -5,7 +5,9 @@ const config: StorybookConfig = {
   // the design system and the app's routes.
   "stories": [
     { "directory": "../components/ui", "files": "**/*.@(mdx|stories.@(ts|tsx))", "titlePrefix": "Design system" },
-    { "directory": "../app", "files": "**/*.stories.@(ts|tsx)", "titlePrefix": "Pages" }
+    { "directory": "../app", "files": "**/*.stories.@(ts|tsx)", "titlePrefix": "Pages" },
+    // Pitch and case-study frames. Storybook only: nothing here is an app route.
+    { "directory": "../stories/hero", "files": "**/*.stories.@(ts|tsx)", "titlePrefix": "Hero" }
   ],
   "addons": [
     "@chromatic-com/storybook",

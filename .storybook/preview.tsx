@@ -34,7 +34,7 @@ const preview: Preview = {
   ],
   parameters: {
     options: {
-      storySort: { order: ['Design system', ['Foundations', '*'], 'Pages'] },
+      storySort: { order: ['Design system', ['Foundations', '*'], 'Pages', 'Hero'] },
     },
     // Every route lives in the App Router, so mock next/navigation (Link, notFound) the App Router way.
     nextjs: {
