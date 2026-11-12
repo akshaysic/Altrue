@@ -71,3 +71,20 @@ Craft-floor bans hit: eyebrow labels above headings ("Sample donor", "Step 1 of 
 - Fixed bottom chrome (action bar + tab bar) is about 130 px of an 844 px screen.
 - Story-local parts (`AreaMark`, `OptionRow`, `StepIndicator`, `SplitBar`, `Switch`) should be promoted through cards B1, B2, B5 and B10.
 - All copy is placeholder until the two-vendor copy check.
+
+## Step 3 · Illustration spots (ranked)
+
+Constraints: inline SVG; ink plus one accent; one stroke weight (1.5 px, non-scaling); built from the area marks;
+no people, logos or numbers; decorative ones `aria-hidden`. The top three are rough options in `Hero/IllustrationOptions`
+(`stories/hero/Illustrations.tsx`), not placed in any hero.
+
+| Rank | Spot | Screen | Purpose | Why it helps a pitch | Risk |
+|---|---|---|---|---|---|
+| 1 | c · How your gift flows (built) | Plan | One gift → equal split → causes → charities; or → fund when experts decide | Explains the meta-charity model, the pitch's core idea, in one look | Low. Must not suggest money moves (frame label and note cover it); charity nodes stay derived from the seed |
+| 2 | d · Where the numbers come from (built) | Charity detail | Evaluator → estimate → as-of date | Makes sourcing, the trust differentiator, visible before the figure | Reuses area shapes for other meanings (kept as outlines vs filled area marks); must never look like a certification seal |
+| 3 | a · Giving pattern (built) | Profile | The donor's area marks sized by share of money given | Personal and data-honest without any impact claim | Size can read as impact or importance; equal splits look flat; the fund month counts under Global health (seed category) |
+| 4 | g · Experts mark (own) | OptionRow | The three marks held in one frame (the fund glyph from c) | Explains "one fund decides" at the moment of choice | Low; small and decorative |
+| 5 | f · Onboarding header | Explore | The three marks as a header | Adds brand presence the frames lack | Decorative only, can look generic, pushes the question down |
+| 6 | b · Intervention pictograms | Explore rows, charity detail | Net, medicine, vitamin drop, clinic, mobile money, hen | Concrete at a glance | High: six bespoke drawings break "built from area marks"; implied claims (a hen for a charity that campaigns with companies); clip-art risk; must all be equal size |
+| 7 | h · Empty-figure mark (own) | Profile, detail | Outline mark for "no evaluator figure yet" | Low | Low; useful later (plan C6) |
+| 8 | e · Month strip | Profile | Twelve cells filled for months given | Low | Rejected: empty cells read as a streak or missed months, against the no-streaks and no-guilt rules even without streak words |
