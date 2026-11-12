@@ -16,7 +16,7 @@ type OrganizationCardProps = {
   className?: string;
 };
 
-/** One equal-sized card: name, ONE key figure with its label, a source link, and a details link. No default pick. */
+/** One equal-sized card: name, ONE key figure with its label (or the evidence note when the packet has none), a source link, and a details link. No default pick. */
 export function OrganizationCard({ organization, eyebrow, showSummary = false, className }: OrganizationCardProps) {
   const { title, subtitle } = splitOrganizationName(organization.name);
   const figure = organization.figures[0];
@@ -40,7 +40,16 @@ export function OrganizationCard({ organization, eyebrow, showSummary = false, c
             {copy.charities.source}
           </SourceLink>
         </div>
-      ) : null}
+      ) : (
+        // The packet has no figure for this record (The Humane League). Show its evidence note instead; never invent a number.
+        <div className="mt-auto">
+          <p className="break-words text-ds-small">{organization.evidence}</p>
+          <p className="mt-ds-xs text-ds-small text-ds-ink-2">{copy.charities.noFigure}</p>
+          <SourceLink href={organization.source_url} sourceName={organization.source_name}>
+            {copy.charities.source}
+          </SourceLink>
+        </div>
+      )}
       <Link
         href={`/charities/${organization.id}`}
         className={clsx(buttonClassName({ variant: "secondary", block: true }), "min-h-ds-touch text-ds-small")}

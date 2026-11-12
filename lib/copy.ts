@@ -28,6 +28,7 @@ export const copy = {
     featuredHint: "Shown in alphabetical order. None is pre-selected.",
     expertHeading: "Let experts decide",
     estimate: "Estimate",
+    noFigure: "No sourced figure yet.",
     source: "Source",
     details: "Details",
     empty: "No charities to show for this choice."
