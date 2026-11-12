@@ -56,7 +56,7 @@ export const PLACEHOLDER_COPY = {
     expertsLabel: "Let experts decide",
     expertsNote: "Put the whole amount in one fund chosen by experts.",
     splitHeading: "Illustrative split, demo only",
-    splitNote: "A simple equal split. Placeholder rule, not advice.",
+    splitNote: "A simple equal split. Illustrative split for this demo. A real version would let you change it.",
     total: "Total each month",
     continue: "Review (demo)"
   },
