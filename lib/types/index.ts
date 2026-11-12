@@ -159,3 +159,29 @@ export type AiRecommendation = {
   createdAt: string;
   acceptedAt?: string;
 };
+
+/** One figure exactly as the source states it. `basis` says who claims it. */
+export type SourcedFigure = {
+  value: string;
+  label: string;
+  basis: string;
+};
+
+/** A charity or fund record from the T-05 source packet. Every record carries its source and as-of date. */
+export type SourcedCharity = {
+  id: string;
+  name: string;
+  type: "charity" | "fund" | "platform";
+  impact_area: string;
+  region: string;
+  summary: string;
+  key_figures: SourcedFigure[];
+  evidence: string;
+  evaluator: string;
+  donate_url: string;
+  source_url: string;
+  source_name: string;
+  source_as_of: string;
+  retrieved: string;
+  notes: string;
+};
