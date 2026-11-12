@@ -72,7 +72,8 @@ export const PLACEHOLDER_COPY = {
     body: "This is what your monthly gift would look like. Nothing was charged and nothing was saved.",
     splitHeading: "Illustrative split, demo only",
     totalLabel: "Total per month",
-    figureNote: "Estimate, in USD as sourced",
+    figureNote: "Estimate",
+    figureNoteUsd: "Estimate, in USD as sourced",
     asOfLabel: "As of",
     changeAmount: "Change amount",
     startAgain: "Start again"

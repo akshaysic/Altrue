@@ -37,7 +37,7 @@ export function SplitLedger({ lines, withSources = false, totalLabel }: SplitLed
                       <span className="mt-ds-sm block text-ds-ink">
                         {figure.value} {figure.label}
                         <span className="mt-ds-xs block">
-                          <DemoTag>{copy.figureNote}</DemoTag>
+                          <DemoTag>{figure.value.includes("$") ? copy.figureNoteUsd : copy.figureNote}</DemoTag>
                         </span>
                       </span>
                     ) : null}

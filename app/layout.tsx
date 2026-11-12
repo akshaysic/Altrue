@@ -10,7 +10,9 @@ import { DemoBanner } from "@/components/layout/DemoBanner";
 
 export const metadata: Metadata = {
   title: "Altrue MVP",
-  description: "A donor-side meta-charity microdonation MVP scaffold."
+  description: "A donor-side meta-charity microdonation MVP scaffold.",
+  // Unlisted prototype: keep it out of search results. vercel.json sends the same as an X-Robots-Tag header.
+  robots: { index: false, follow: false }
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
