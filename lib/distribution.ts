@@ -8,8 +8,17 @@ import type { MvpCategory } from "@/lib/types";
  *  - Otherwise the amount is split equally across the picked causes.
  *  - Within a cause, equally across that cause's featured charities.
  *  - Animal welfare goes 100% to its one charity (The Humane League).
- *  - Each line is rounded down to whole cents; the leftover cents go to the first line.
+ *  - Integer cents throughout. Each split gives everyone floor(total / n), then hands the leftover
+ *    cents out one at a time to the first ones in order, so shares differ by at most 1 cent
+ *    (EUR 50 across 3 causes is 16.67, 16.67, 16.66) and always add up to the total.
  */
+
+/** Splits `total` cents into `parts` shares that differ by at most 1 cent; the first shares get the extras. */
+function splitEvenly(total: number, parts: number): number[] {
+  const base = Math.floor(total / parts);
+  const leftover = total - base * parts;
+  return Array.from({ length: parts }, (_, index) => base + (index < leftover ? 1 : 0));
+}
 
 export type DistributionInput = {
   totalCents: number;
@@ -40,11 +49,9 @@ export function distribute(input: DistributionInput): DistributionLine[] {
     .filter((ids) => ids.length > 0);
   if (groups.length === 0) return [];
 
-  const lines: DistributionLine[] = groups.flatMap((ids) =>
-    ids.map((organizationId) => ({ organizationId, cents: Math.floor(total / groups.length / ids.length) }))
+  // Cause level first, then charity level inside each cause.
+  const causeShares = splitEvenly(total, groups.length);
+  return groups.flatMap((ids, index) =>
+    splitEvenly(causeShares[index], ids.length).map((cents, position) => ({ organizationId: ids[position], cents }))
   );
-
-  const leftover = total - lines.reduce((sum, line) => sum + line.cents, 0);
-  lines[0] = { ...lines[0], cents: lines[0].cents + leftover };
-  return lines;
 }
