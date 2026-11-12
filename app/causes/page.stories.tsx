@@ -1,23 +1,29 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { expect } from 'storybook/test';
-import { causes } from '@/lib/seed';
-import CausesPage from './page';
+import { CauseList } from '@/components/prototype/CauseList';
 
 const meta = {
-  component: CausesPage,
-  tags: ['ai-generated'],
-  parameters: { layout: 'fullscreen' },
-} satisfies Meta<typeof CausesPage>;
+  component: CauseList,
+  parameters: { layout: 'padded', viewport: { defaultViewport: 'mobile1' } },
+  args: { areas: [] },
+} satisfies Meta<typeof CauseList>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
+export const AllAreas: Story = {
   play: async ({ canvas }) => {
-    // One card per seeded cause, each titled with the cause name.
-    const cardTitles = canvas.getAllByRole('heading', { level: 2 }).map((heading) => heading.textContent);
-    await expect(cardTitles).toEqual(causes.map((cause) => cause.name));
-    // Tags come from seed data (first three per cause).
-    await expect(canvas.getAllByText(causes[0].tags[0]).length).toBeGreaterThan(0);
+    for (const name of ['GiveDirectly', 'Malaria Consortium', 'Against Malaria Foundation', 'Helen Keller Intl', 'New Incentives', 'GiveWell Top Charities Fund', 'The Humane League']) {
+      await expect(canvas.getByRole('link', { name })).toBeVisible();
+    }
+    await expect(canvas.getByRole('heading', { name: 'Let experts decide' })).toBeVisible();
+  },
+};
+
+export const AnimalWelfareOnly: Story = {
+  args: { areas: ['Animal welfare'] },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByRole('link', { name: 'The Humane League' })).toBeVisible();
+    await expect(canvas.queryByRole('heading', { name: 'Featured' })).toBeNull();
   },
 };
