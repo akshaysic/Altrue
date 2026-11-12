@@ -26,7 +26,7 @@ export function GiveForm({ areas, initialAmount, initialExperts }: { areas: MvpC
 
   return (
     <>
-      <Amount cents={amount * 100} size="compact" caption={copy.amountCaption} className="mt-ds-lg" />
+      <Amount cents={amount * 100} size="compact" currency={currency} caption={copy.amountCaption} className="mt-ds-lg" />
 
       <label htmlFor="monthly-amount" className="mt-ds-lg block text-ds-small text-ds-ink-2">
         {copy.sliderLabel}
