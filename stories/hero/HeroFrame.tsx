@@ -13,10 +13,12 @@ type HeroFrameProps = {
   /** Every pitch frame carries the concept label so a screenshot can't pass for the live product. */
   showConceptLabel?: boolean;
   children: ReactNode;
+  /** Pinned to the bottom of the screen while the content scrolls: the primary action and its summary. */
+  actionBar?: ReactNode;
 };
 
 /** One flat 390 px screen: no bezel, no shadow, just the ground colour and a plain-text wordmark. */
-export function HeroFrame({ showConceptLabel = true, children }: HeroFrameProps) {
+export function HeroFrame({ showConceptLabel = true, children, actionBar }: HeroFrameProps) {
   return (
     <div className="flex min-h-[844px] w-[390px] flex-col bg-ds-ground font-ds text-ds-ink">
       <header className="flex min-h-ds-touch items-center justify-between gap-ds-sm border-b border-ds-rule px-ds-md">
@@ -24,6 +26,14 @@ export function HeroFrame({ showConceptLabel = true, children }: HeroFrameProps)
         {showConceptLabel ? <DemoTag>{CONCEPT_LABEL}</DemoTag> : null}
       </header>
       <main className="flex flex-1 flex-col gap-ds-xl px-ds-md pb-ds-lg pt-ds-lg">{children}</main>
+      {actionBar ? (
+        <section
+          aria-label="Action bar"
+          className="sticky bottom-0 flex flex-col gap-ds-sm border-t border-ds-rule bg-ds-ground px-ds-md pb-ds-md pt-ds-sm"
+        >
+          {actionBar}
+        </section>
+      ) : null}
     </div>
   );
 }
