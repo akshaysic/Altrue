@@ -1,15 +1,16 @@
 import { notFound } from "next/navigation";
 import { MobileShell } from "@/components/layout/MobileShell";
+import { getMvpOrganizationById } from "@/components/prototype/areas";
 import { CharityDetail } from "@/components/prototype/CharityDetail";
-import { charities, getCharityById } from "@/lib/seed/charities";
+import { curatedOrganizations, selectMvp } from "@/lib/seed";
 
 export function generateStaticParams() {
-  return charities.map((charity) => ({ id: charity.id }));
+  return selectMvp(curatedOrganizations).map((org) => ({ id: org.id }));
 }
 
 export default async function CharityDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const charity = getCharityById(id);
+  const charity = getMvpOrganizationById(id);
   if (!charity) notFound();
 
   return (

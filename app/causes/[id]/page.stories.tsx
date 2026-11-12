@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { expect } from 'storybook/test';
 import { CharityDetail } from '@/components/prototype/CharityDetail';
-import { getCharityById } from '@/lib/seed/charities';
+import { getMvpOrganizationById as getCharityById } from '@/components/prototype/areas';
 
 const meta = {
   component: CharityDetail,
