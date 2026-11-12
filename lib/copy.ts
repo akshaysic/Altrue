@@ -3,8 +3,9 @@
 // Charity names, summaries, figures, evidence and sources come from lib/seed/sources.ts (copied from the source packet), not from here.
 // Rule: no facts or impact numbers in this file. The amount range below is a prototype setting, not a fact.
 
-/** PLACEHOLDER: the human fills in the real feedback form URL. Shown on every screen. */
-export const FEEDBACK_URL = "https://example.com/altrue-feedback-placeholder";
+/** PLACEHOLDER: the human fills in the real feedback form URL. Shown on every screen.
+ *  Until then it points at the in-app /feedback stub, so the link never 404s. A full https:// URL opens in a new tab. */
+export const FEEDBACK_URL = "/feedback";
 
 /** PLACEHOLDER: monthly amount slider range on /give, in whole euros. */
 export const PLACEHOLDER_AMOUNT_EUR = { min: 10, max: 50, default: 20, step: 1 } as const;
@@ -77,5 +78,11 @@ export const PLACEHOLDER_COPY = {
     asOfLabel: "As of",
     changeAmount: "Change amount",
     startAgain: "Start again"
+  },
+
+  // Stub page at /feedback; the real local feedback form is T-35. FEEDBACK_URL points here until the human sets a real URL.
+  feedback: {
+    title: "Feedback",
+    body: "The feedback form is not built yet. For now, tell the person who sent you this prototype."
   }
 } as const;

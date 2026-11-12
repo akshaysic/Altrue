@@ -1,5 +1,7 @@
 import { FEEDBACK_URL, PLACEHOLDER_COPY } from "@/lib/copy";
 
+const isExternal = /^https?:\/\//.test(FEEDBACK_URL);
+
 /** Persistent, flat demo banner with the feedback link. Lives in the root layout so it is on every screen. */
 export function DemoBanner() {
   return (
@@ -10,12 +12,11 @@ export function DemoBanner() {
         </p>
         <a
           href={FEEDBACK_URL}
-          target="_blank"
-          rel="noopener noreferrer"
+          {...(isExternal ? { target: "_blank", rel: "noopener noreferrer" } : {})}
           className="inline-flex min-h-ds-touch items-center underline decoration-1 underline-offset-4 hover:decoration-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ds-focus"
         >
           {PLACEHOLDER_COPY.feedbackLink}
-          <span className="sr-only"> ({PLACEHOLDER_COPY.detail.externalHint})</span>
+          {isExternal ? <span className="sr-only"> ({PLACEHOLDER_COPY.detail.externalHint})</span> : null}
         </a>
       </div>
     </div>
