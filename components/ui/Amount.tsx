@@ -8,14 +8,16 @@ type AmountProps = {
   size?: "hero" | "compact";
   /** One short line under the amount, e.g. "every month". */
   caption?: string;
+  /** ISO currency code. Defaults to USD. */
+  currency?: string;
   className?: string;
 };
 
-export function Amount({ cents, size = "hero", caption, className }: AmountProps) {
+export function Amount({ cents, size = "hero", caption, currency = "USD", className }: AmountProps) {
   return (
     <div className={clsx("font-ds text-ds-ink", className)}>
       <p className={clsx("tabular-nums", size === "hero" ? "text-ds-amount-lg md:text-ds-amount-xl" : "text-ds-amount-md")}>
-        {formatCents(cents)}
+        {formatCents(cents, currency)}
       </p>
       {caption ? <p className="mt-3 text-ds-body text-ds-ink-2">{caption}</p> : null}
     </div>

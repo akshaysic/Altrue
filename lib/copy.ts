@@ -1,10 +1,17 @@
 // PLACEHOLDER copy for the clickable prototype. Edit wording here, in one place.
 // Everything in this file is placeholder, not reviewed copy (T-28 replaces it).
 // Charity names, summaries, figures, evidence and sources come from lib/seed/sources.ts (copied from the source packet), not from here.
-// Rule: no facts or numbers in this file.
+// Rule: no facts or impact numbers in this file. The amount range below is a prototype setting, not a fact.
+
+/** PLACEHOLDER: the human fills in the real feedback form URL. Shown on every screen. */
+export const FEEDBACK_URL = "https://example.com/altrue-feedback-placeholder";
+
+/** PLACEHOLDER: monthly amount slider range on /give, in whole euros. */
+export const PLACEHOLDER_AMOUNT_EUR = { min: 10, max: 50, default: 20, step: 1 } as const;
 
 export const PLACEHOLDER_COPY = {
   demoBanner: "Demo: no money moves",
+  feedbackLink: "Feedback",
 
   onboarding: {
     eyebrow: "Step 1",
@@ -26,7 +33,8 @@ export const PLACEHOLDER_COPY = {
     animalHeading: "Animal welfare",
     noFigure: "No figure sourced yet.",
     sourceLink: "Source",
-    detailsLink: "Details"
+    detailsLink: "Details",
+    giveCta: "Plan a monthly gift"
   },
 
   detail: {
@@ -40,5 +48,33 @@ export const PLACEHOLDER_COPY = {
     asOfLabel: "As of",
     retrievedLabel: "Retrieved",
     externalHint: "opens in a new tab"
+  },
+
+  give: {
+    eyebrow: "Step 3",
+    title: "How much each month?",
+    back: "Back to charities",
+    amountCaption: "per month, in euros",
+    sliderLabel: "Monthly amount",
+    sliderValueText: (amount: string) => `${amount} per month`,
+    expertsLabel: "Let experts decide",
+    expertsHint: "Sends the whole amount to the GiveWell Top Charities Fund instead of the split below.",
+    splitHeading: "Illustrative split, demo only",
+    splitNote: "Equal shares, using a placeholder rule. Not advice.",
+    noCauses: "No causes picked yet.",
+    pickCauses: "Pick causes",
+    continue: "Review"
+  },
+
+  confirm: {
+    eyebrow: "Step 4",
+    title: "Demo: no money moves",
+    body: "This is what your monthly gift would look like. Nothing was charged and nothing was saved.",
+    splitHeading: "Illustrative split, demo only",
+    totalLabel: "Total per month",
+    figureNote: "Estimate, in USD as sourced",
+    asOfLabel: "As of",
+    changeAmount: "Change amount",
+    startAgain: "Start again"
   }
 } as const;

@@ -1,9 +1,11 @@
 import Link from "next/link";
+import { buttonClassName } from "@/components/ui/Button";
 import { PLACEHOLDER_COPY } from "@/lib/copy";
 import { getExpertFund, getFeaturedOrganizations, getMvpAnimalCharity } from "@/lib/seed";
 import type { CuratedOrganization, MvpCategory } from "@/lib/types";
 import { MVP_AREAS } from "./areas";
 import { CharityCard } from "./CharityCard";
+import { flowHref } from "./giveParams";
 
 const linkClass =
   "inline-flex min-h-ds-touch items-center text-ds-small text-ds-ink underline decoration-1 underline-offset-4 hover:decoration-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ds-focus";
@@ -79,6 +81,12 @@ export function CauseList({ areas }: { areas: MvpCategory[] }) {
           </ul>
         </section>
       ) : null}
+
+      <div className="sticky bottom-0 -mx-ds-md mt-ds-xl border-t border-ds-rule bg-ds-ground px-ds-md py-ds-sm">
+        <Link href={flowHref("/give", { causes: shown })} className={buttonClassName({ block: true })}>
+          {copy.giveCta}
+        </Link>
+      </div>
     </>
   );
 }
