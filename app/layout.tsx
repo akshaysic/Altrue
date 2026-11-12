@@ -7,6 +7,7 @@ import "@fontsource/geist-mono/400.css";
 import "@fontsource/geist-mono/500.css";
 import "./globals.css";
 import { DemoBanner } from "@/components/layout/DemoBanner";
+import { SiteFooter } from "@/components/layout/SiteFooter";
 
 export const metadata: Metadata = {
   title: "Altrue MVP",
@@ -19,6 +20,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <body>
         <DemoBanner />
         {children}
+        <SiteFooter />
       </body>
     </html>
   );

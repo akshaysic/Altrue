@@ -2,7 +2,8 @@ import Link from "next/link";
 import { PLACEHOLDER_COPY } from "@/lib/copy";
 import { getExpertFund, getFeaturedOrganizations, getMvpAnimalCharity } from "@/lib/seed";
 import type { CuratedOrganization, MvpCategory } from "@/lib/types";
-import { MVP_AREAS } from "./areas";
+import { buttonClassName } from "@/components/ui/Button";
+import { MVP_AREAS, toAreaSlug } from "./areas";
 import { CharityCard } from "./CharityCard";
 
 const linkClass =
@@ -79,6 +80,12 @@ export function CauseList({ areas }: { areas: MvpCategory[] }) {
           </ul>
         </section>
       ) : null}
+
+      <div className="mt-ds-xl">
+        <Link href={`/give?areas=${shown.map(toAreaSlug).join(",")}`} className={buttonClassName({ block: true })}>
+          {copy.setAmount}
+        </Link>
+      </div>
     </>
   );
 }
