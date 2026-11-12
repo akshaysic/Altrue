@@ -87,6 +87,8 @@ Explicitly not producing: charity logos (trademark permission), beneficiary phot
 
 ## 6. Stale cards Strategy should repoint before they run
 
+Resolved 2026-11-12: T-29 to T-32 repointed to the live routes; T-19 to T-21 marked "done by prototype, review only" with gaps carried; FIRST-TEST-PATH updated.
+
 - T-29–T-32 target `PublicLayout`, `DonorAppLayout`, `app/causes/[slug]`, `app/plan/review`, `app/checkout`. These routes are retired or redirected; the live flow uses `MobileShell` and `app/causes/[id]`, `/give`, `/confirm`.
 - T-12 bundles Card + Progress; fine to keep as one card.
 - FIRST-TEST-PATH lists T-19–T-21 as rebuilds; the prototype already covers much of them. Decide "build on" vs "replace" before D-wave.
