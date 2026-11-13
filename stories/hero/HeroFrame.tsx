@@ -1,101 +1,98 @@
-import type { ReactNode } from "react";
+"use client";
+
+import { createContext, useContext, type ReactNode } from "react";
+import { CircleUser, Compass, PieChart } from "lucide-react";
 import clsx from "clsx";
 import { DemoTag } from "@/components/ui/DemoTag";
-import { formatCents } from "@/lib/formatters";
-import type { MvpCategory } from "@/lib/types";
 
 export const CONCEPT_LABEL = "Concept mockup · sample data";
 
 /** 150 ms, and none at all when the viewer asks for reduced motion. */
 export const HERO_TRANSITION = "duration-150 ease-out motion-reduce:transition-none";
 
+/**
+ * A frame is a whole screen, so it owns header, main and nav landmarks. The overview puts several frames on one
+ * page, where repeated main and nav landmarks would fail accessibility checks; it turns them off through this context.
+ */
+const LandmarksContext = createContext(true);
+export const useLandmarks = () => useContext(LandmarksContext);
+
+export function FrameLandmarks({ enabled, children }: { enabled: boolean; children: ReactNode }) {
+  return <LandmarksContext.Provider value={enabled}>{children}</LandmarksContext.Provider>;
+}
+
+export type HeroTab = "explore" | "plan" | "profile";
+
+const TABS = [
+  { id: "explore", label: "Explore", Icon: Compass },
+  { id: "plan", label: "Plan", Icon: PieChart },
+  { id: "profile", label: "Profile", Icon: CircleUser }
+] as const;
+
+/** Flat bottom navigation: a 1 px top rule, no badges, no shadow. The current tab is marked by colour, weight and aria-current. */
+function TabBar({ active }: { active: HeroTab }) {
+  const landmarks = useLandmarks();
+  const Nav = landmarks ? "nav" : "div";
+
+  return (
+    <Nav aria-label={landmarks ? "Main" : undefined} className="border-t border-ds-rule bg-ds-ground">
+      <ul className="grid grid-cols-3">
+        {TABS.map(({ id, label, Icon }) => {
+          const current = id === active;
+          return (
+            <li key={id}>
+              <a
+                href={`#${id}`}
+                aria-current={current ? "page" : undefined}
+                className={clsx(
+                  "flex min-h-14 flex-col items-center justify-center gap-0.5 font-ds text-ds-small",
+                  "focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ds-focus",
+                  current ? "font-semibold text-ds-accent" : "text-ds-ink-2"
+                )}
+              >
+                <Icon aria-hidden size={20} strokeWidth={current ? 2.25 : 1.75} />
+                {label}
+              </a>
+            </li>
+          );
+        })}
+      </ul>
+    </Nav>
+  );
+}
+
 type HeroFrameProps = {
   /** Every pitch frame carries the concept label so a screenshot can't pass for the live product. */
   showConceptLabel?: boolean;
+  /** Which bottom tab this screen belongs to. */
+  tab: HeroTab;
   children: ReactNode;
-  /** Pinned to the bottom of the screen while the content scrolls: the primary action and its summary. */
+  /** Pinned above the tab bar while the content scrolls: the screen's one primary action. */
   actionBar?: ReactNode;
+  /** The screen's one plain caveat line, set in ink-2 just above the bottom rule. Replaces tinted notice boxes. */
+  note?: ReactNode;
 };
 
 /** One flat 390 px screen: no bezel, no shadow, just the ground colour and a plain-text wordmark. */
-export function HeroFrame({ showConceptLabel = true, children, actionBar }: HeroFrameProps) {
+export function HeroFrame({ showConceptLabel = true, tab, children, actionBar, note }: HeroFrameProps) {
+  const landmarks = useLandmarks();
+  const Header = landmarks ? "header" : "div";
+  const Main = landmarks ? "main" : "div";
+
   return (
     <div className="flex min-h-[844px] w-[390px] flex-col bg-ds-ground font-ds text-ds-ink">
-      <header className="flex min-h-ds-touch items-center justify-between gap-ds-sm border-b border-ds-rule px-ds-md">
+      <Header className="flex min-h-ds-touch items-center justify-between gap-ds-sm border-b border-ds-rule px-ds-md">
         <span className="text-ds-row font-bold tracking-tight">Altrue</span>
         {showConceptLabel ? <DemoTag>{CONCEPT_LABEL}</DemoTag> : null}
-      </header>
-      <main className="flex flex-1 flex-col gap-ds-xl px-ds-md pb-ds-lg pt-ds-lg">{children}</main>
-      {actionBar ? (
-        <section
-          aria-label="Action bar"
-          className="sticky bottom-0 flex flex-col gap-ds-sm border-t border-ds-rule bg-ds-ground px-ds-md pb-ds-md pt-ds-sm"
-        >
-          {actionBar}
-        </section>
-      ) : null}
-    </div>
-  );
-}
-
-/** Source name, link and as-of date, verbatim from the seed record. */
-export function SourceLine({ name, url, asOf }: { name: string; url: string; asOf: string }) {
-  return (
-    <p className="font-ds-mono text-ds-mono text-ds-ink-2">
-      Source:{" "}
-      <a href={url} target="_blank" rel="noreferrer" className="text-ds-ink underline underline-offset-2">
-        {name}
-      </a>{" "}
-      · As of: {asOf}
-    </p>
-  );
-}
-
-/** Area fills. Each clears 3:1 on ground, and the legend names every segment so colour is never the only cue. */
-const AREA_FILL: Record<MvpCategory, string> = {
-  "Global health": "bg-ds-accent",
-  "Poverty relief": "bg-ds-ink",
-  "Animal welfare": "bg-ds-ink-2"
-};
-
-export type AreaTotal = { area: MvpCategory; cents: number };
-
-/**
- * Story-local split bar (the design-system SplitBar is plan item B5, not built yet). It only redraws cents the
- * split already computed; widths ease over 150 ms so switching to "Let experts decide" reads as a change.
- */
-export function SplitBar({ totals, currency }: { totals: readonly AreaTotal[]; currency?: string }) {
-  const sum = totals.reduce((acc, { cents }) => acc + cents, 0);
-
-  return (
-    <div className="flex flex-col gap-ds-sm">
-      <div aria-hidden className="flex h-3 w-full gap-0.5 overflow-hidden rounded-full">
-        {totals.map(({ area, cents }) => (
-          <span
-            key={area}
-            data-area={area}
-            className={clsx("h-full transition-[width]", HERO_TRANSITION, AREA_FILL[area])}
-            style={{ width: sum > 0 ? `${(cents / sum) * 100}%` : "0%" }}
-          />
-        ))}
+      </Header>
+      <Main className="flex flex-1 flex-col gap-ds-xl px-ds-md pb-ds-md pt-ds-lg">
+        {children}
+        {note ? <p className="mt-auto text-ds-small text-ds-ink-2">{note}</p> : null}
+      </Main>
+      <div className="sticky bottom-0">
+        {actionBar ? <div className="border-t border-ds-rule bg-ds-ground px-ds-md py-ds-sm">{actionBar}</div> : null}
+        <TabBar active={tab} />
       </div>
-      <ul className="flex flex-wrap gap-x-ds-md gap-y-ds-xs text-ds-small text-ds-ink-2">
-        {totals
-          .filter(({ cents }) => cents > 0)
-          .map(({ area, cents }) => (
-            <li key={area} className="inline-flex items-center gap-ds-xs">
-              <span aria-hidden className={clsx("size-2.5 rounded-full", AREA_FILL[area])} />
-              {area} · <span className="tabular-nums text-ds-ink">{formatCents(cents, currency)}</span>
-            </li>
-          ))}
-      </ul>
     </div>
-  );
-}
-
-/** "1 Nov 2026" from an ISO date, pinned to UTC so the date can't drift with the viewer's time zone. */
-export function formatDay(iso: string) {
-  return new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" }).format(
-    new Date(`${iso}T00:00:00Z`)
   );
 }
